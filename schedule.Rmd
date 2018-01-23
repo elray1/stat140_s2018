@@ -52,7 +52,7 @@ make_week_box("week1", TRUE, "Week 1: Jan 22 -- 26",
     * **Fill out** a brief pre-course [questionairre](https://goo.gl/forms/uaQwDv6PFuoT0PD43)
     * **Fill out** this poll about when my office hours should be held: [http://whenisgood.net/2r7jg27](http://whenisgood.net/2r7jg27)
     * Sign up for our class at gryd.us if you didn't already (this is the site where we will use R): [https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/](https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/)
-    * Sign up for our class at Piazza (anonymous question and answer forum): [piazza.com/mtholyoke/spring2018/stat140](piazza.com/mtholyoke/spring2018/stat140)
+    * Sign up for our class at Piazza (anonymous question and answer forum): [https://piazza.com/mtholyoke/spring2018/stat140](https://piazza.com/mtholyoke/spring2018/stat140)
     * **Reading**: Read Chapter 1 of Stats: Data and Models 4th edition, or Chapter 2 of the 3rd edition
     * **Homework 1**: Complete 4 [DataCamp](https://www.datacamp.com) chapters on Introduction to R.  You will get an email by the end of the day on Jan 23 inviting you to join our class organization with an assignment pointing you to the specific chapters to do.  You should **feel free to work on this in groups** -- but please **each complete your own copy of this assignment**!  Your grade on this assignment is only for completion, not correctness.  If you get stuck, post a message on Piazza!  I don't expect you to remember everything or feel like an expert at it; that's what the rest of the class is for!  This is just a first introduction.
 * **In class**, we will do the following:
