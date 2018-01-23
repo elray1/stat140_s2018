@@ -50,6 +50,7 @@ make_week_box("week1", TRUE, "Week 1: Jan 22 -- 26",
 #### Thu, Jan 25
  * **Before class**, please do the following:
     * **Fill out** a brief pre-course [questionairre](https://goo.gl/forms/uaQwDv6PFuoT0PD43)
+    * **Fill out** this poll about when my office hours should be held: [http://whenisgood.net/2r7jg27](http://whenisgood.net/2r7jg27)
     * Sign up for our class at gryd.us if you didn't already (this is the site where we will use R): [https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/](https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/)
     * Sign up for our class at Piazza (anonymous question and answer forum): [piazza.com/mtholyoke/spring2018/stat140](piazza.com/mtholyoke/spring2018/stat140)
     * **Reading**: Read Chapter 1 of Stats: Data and Models 4th edition, or Chapter 2 of the 3rd edition
