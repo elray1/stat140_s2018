@@ -44,11 +44,18 @@ make_week_box("week1", TRUE, "Week 1: Jan 22 -- 26",
 #### Tue, Jan 23
 
  * **In class**, we will work on:
-    * Not yet planned
- * **After class**, please do the following:
-    * Not yet planned
+    * Introductory lab: friend or foe? [pdf](lecture/20180123_friend_or_foe/20180123_friend_or_foe.pdf)
+    * Here's a link to sign up for our class at gryd.us (this is the site where we will use R, you will need to do this to complete the lab): [https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/](https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/)
 
 #### Thu, Jan 25
+ * **Before class**, please do the following:
+    * **Fill out** a brief pre-course [questionairre](https://goo.gl/forms/uaQwDv6PFuoT0PD43)
+    * Sign up for our class at gryd.us if you didn't already (this is the site where we will use R): [https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/](https://beta.gryd.us/course/WNqfkUCNPkv2u3DBBWjnvh/register/)
+    * Sign up for our class at Piazza (anonymous question and answer forum): [piazza.com/mtholyoke/spring2018/stat140](piazza.com/mtholyoke/spring2018/stat140)
+    * **Reading**: Read Chapter 1 of Stats: Data and Models 4th edition, or Chapter 2 of the 3rd edition
+    * **Homework 1**: Complete 4 [DataCamp](https://www.datacamp.com) chapters on Introduction to R.  You will get an email by the end of the day on Jan 23 inviting you to join our class organization with an assignment pointing you to the specific chapters to do.  You should **feel free to work on this in groups** -- but please **each complete your own copy of this assignment**!  Your grade on this assignment is only for completion, not correctness.  If you get stuck, post a message on Piazza!  I don't expect you to remember everything or feel like an expert at it; that's what the rest of the class is for!  This is just a first introduction.
+* **In class**, we will do the following:
+    * Introduction to R lab.
 
 #### Fri, Jan 26
 "
