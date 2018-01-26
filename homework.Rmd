@@ -8,3 +8,12 @@ title: "Homework"
 |    1         | 4 sections from the "Intro to R" course on    | 1/29/2018 |  0.5  |       N/A                                |
 |              | Data Camp. Graded for completion only.        |           |       |                                          |
 +--------------+-----------------------------------------------+-----------+-------+------------------------------------------+
+|    2         | "Data Wrangling" chapter from the "Intro to   | 1/30/2018 |  0.25 |       N/A                                |
+|              | the Tidyverse" course on Data Camp.           |           |       |                                          |
+|              | Graded for completion only.                   |           |       |                                          |
++--------------+-----------------------------------------------+-----------+-------+------------------------------------------+
+|    3         | "Data Visualization" and "Types of            | 2/1/2018  |  0.5  |       N/A                                |
+|              | Visualizations" chapters from the "Intro to   |           |       |                                          |
+|              | the Tidyverse" course on Data Camp.           |           |       |                                          |
+|              | Graded for completion only.                   |           |       |                                          |
++--------------+-----------------------------------------------+-----------+-------+------------------------------------------+
