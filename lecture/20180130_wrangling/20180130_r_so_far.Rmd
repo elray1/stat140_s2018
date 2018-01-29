@@ -1,0 +1,368 @@
+---
+title: "Stat 140: R Commands and Concepts So Far"
+date: "January 30, 2018"
+output:
+  pdf_document:
+    keep_tex: true
+header-includes:
+   - \usepackage{booktabs}
+geometry: margin=1.5cm
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+\begin{table}[!h]
+\begin{tabular}{p{4.25cm} p{12.5cm}}
+\toprule
+Task & R Command \\
+\midrule
+Load a package & \verb&library(dplyr)& \\
+\midrule
+Assign a value to a variable & \verb&my_var <- 3& \\
+\midrule
+Read a csv file & \verb&nhanes <- readcsv("path/to/nhanes.csv")& \\
+\midrule
+Display first few lines of a data frame & \verb&head(nhanes)& \\
+\midrule
+Display more detail about a data frame & \verb&str(nhanes)& \\
+\midrule
+Number of rows and columns in a data frame & \verb&dim(nhanes)&, \verb&nrow(nhanes)&, \verb&ncol(nhanes)& \\
+\midrule
+Convert a nominal categorical variable to factor & \verb&nhanes <- nhanes %>% mutate(Gender = factor(Gender))& \\
+\midrule
+Convert an ordinal & \verb&nhanes <- nhanes %>% mutate(& \\
+categorical variable & \verb&  Education = factor(Education,& \\
+to factor & \verb&    levels = c("High School", "Some College", "College Grad"),& \\
+ & \verb&    ordered = TRUE))& \\
+\midrule
+View the distinct values of a variable (mainly useful for categorical variables) & \verb&nhanes %>% distinct(Education)& \\
+\midrule
+Count number of observations in each level of a categorical variable & \verb&tally( ~ Education, data = nhanes)& \\
+\midrule
+Count number of observations in each combination of levels of two categorical variables & \verb&tally(Education ~ Gender, data = nhanes)& \\
+\midrule
+Add or modify a variable in a data frame & \verb&nhanes_modified <- nhanes %>%& \\
+Add or modify a variable in a data frame & \verb&  mutate(Weight_pounds = Weight * 2.205)& \\
+\midrule
+Filter observational units, & \verb&nhanes_fewer_obs_units <- nhanes %>%& \\
+character condition & \verb&  filter(Education == "High School")& \\
+\midrule
+Filter, character condition & \verb&nhanes_fewer_obs_units <- nhanes %>%& \\
+with multiple values & \verb&  filter(Education == "High School" | Education == "Some College") & \\
+\midrule
+Filter, numeric condition & \verb&nhanes_fewer_obs_units <- nhanes %>%& \\
+ & \verb&  filter(Age >= 22)& \\
+\midrule
+Filter, multiple conditions & \verb&nhanes_fewer_obs_units <- nhanes %>%& \\
+ & \verb&  filter(Education == "High School", Age >= 22)& \\
+\midrule
+Sort observational units, ascending order & \verb&nhanes_sorted <- nhanes %>% arrange(Age)& \\
+\midrule
+Sort observational units, descending order & \verb&nhanes_sorted <- nhanes %>% arrange(desc(Age))& \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\newpage
+
+In this document I am going to summarize the main commands and concepts for R that we have learned so far -- along with a couple of others that you haven't seen but are closely related to what we've done so far.  These are organized into four main groups:
+
+1. R variables and the assignment operator
+2. Basic interactions with data frames
+    a. Reading data into R from spreadsheet files
+    b. Getting a first look at what's in a data frame
+    c. Converting categorical variables to factors
+3. Summarizing categorical data
+4. Data wrangling
+
+I will illustrate the ideas using the NHANES data we looked at in Lab 1.
+
+## 1. R variables and the assignment operator
+
+In R, we use the word "variable" in two ways.  The first is a name that we've given a value that we want to be able to re-use later.  In the example below, `my_var` is a variable.  We have *assigned* the value 3 to it using the *assignment operator*, `<-` (a less than sign followed by a minus sign, to form an arrow).
+
+```{r}
+my_var <- 3
+```
+
+We can see the value that's currently assigned to `my_var` by entering the name of the variable on its own line:
+
+```{r}
+my_var
+```
+
+We can also use that value in later calculations:
+```{r}
+my_var * 2
+```
+
+The second meaning of the word "variable" is more closely related to our use of the word in statistics: a column in a data frame.  We'll look at that next.
+
+## 2. Basic interactions with data frames
+
+In R, the most common way to store data is in a data frame.  You can think of a data frame as being like a spreadsheet.  Each row corresponds to an observational unit, and each column corresponds to a variable.
+
+### a. Reading data into R from spreadsheet files
+
+Usually, the data are stored in a spreadsheet-like file outside of R.  The file format we'll work with most in this class is a csv file (csv stands for comma separated value).  We can read in csv files using the `read_csv` function, which is in the `readr` package:
+
+```{r}
+library(readr)
+nhanes <- read_csv("http://www.evanlray.com/stat140_s2018/lecture/20180125_intro_to_r/nhanes.csv")
+```
+
+If the data file was stored on your computer instead of on the class website, you would change the file location in these commands to where the file is located on your computer.
+
+There are also functions to read in data from other file formats.  For example, if your data were stored in an excel file (with a file extension like xlsx), you could use the `read_excel` function from the `readxl` package to read the data in.  This function doesn't handle reading files from the internet very well yet, so we won't use it much in this class -- but it's there if you need it later.
+
+### b. Getting a first look at what's in the data frame
+
+There are a couple of questions I always ask myself whenever I'm thinking about a new data set:
+
+ 1. How many observational units and variables are in this data set?
+ 2. What are the variables and variable types?
+
+We've talked about three functions that can be used to help answer these questions.
+
+#### `head`
+
+The `head` function shows you the first few rows of the data set (by default, the first 6 rows).  It's good for getting a quick summary of what's in the data frame, but it will not tell you how many observational units there are.
+
+```{r}
+head(nhanes)
+```
+
+#### `str`
+
+The `str` function will print out some more detailed information about the data frame, including how many observational units and variables there are, and the type of each variable -- but its output is a little less well organized.
+
+```{r}
+str(nhanes)
+```
+
+#### `dim`, `nrow`, and `ncol`
+
+The `dim` function will tell you how many rows (i.e., how many observational units) and columns (i.e., how many variables) are in the data frame (in that order).  The `nrow` function will tell you how many rows there are, and the `ncol` function will tell you how many columns there are.
+
+```{r}
+dim(nhanes)
+nrow(nhanes)
+ncol(nhanes)
+```
+
+### c. Converting categorical variables to factors
+
+When you first read a data set in, quantitative data types will usually be assigned the correct data type in R, but categorical variables will typically be stored as a character data type in R.  We'll need to tell R that these are categorical variables by converting them to `factors`.  A factor is just R's name for a categorical variable.
+
+Remember that we divide categorical variables into two sub-types:
+
+1. Nominal, where there is no specific order to the categories (for example think of eye color -- the categories might be blue, green, brown, etc., and there is no specific order to those categories)
+2. Ordinal, where there is a specific order to the categories (for example think of education level -- the categories might be "less than high school degree", "some college", "college degree", "graduate degree")
+
+The difference in reading these into R is in whether or not we need to specify an `ordered = TRUE` argument to the `factor` function.
+
+In both cases, we will use the `mutate` function to modify the data frame.  The `mutate` function will be described more later in this document.  It is in the `dplyr` package, so we need to load that package before we can use it:
+
+```{r}
+library(dplyr)
+```
+
+#### Converting a nominal categorical variable to a `factor`
+
+```{r}
+nhanes <- nhanes %>%
+    mutate(Gender = factor(Gender))
+```
+
+#### Converting an ordinal categorical variable to an *ordered* `factor`
+
+```{r}
+nhanes <- nhanes %>%
+    mutate(
+        Education = factor(Education,
+            levels = c("8th Grade", "9 - 11th Grade", "High School", "Some College", "College Grad"),
+            ordered = TRUE)
+    )
+```
+
+For an ordinal variable, we need to add two more arguments to the call to `factor`:
+
+ * specify the `levels` of the variable in order tell R what order they come in.
+ * `ordered = TRUE` argument to tell R that it needs to pay attention to and remember the order we specified above.
+
+#### Listing distinct values of a variable
+
+In order to know what to list for the possible levels of an ordinal categorical variable, you can use the `distinct` function to list the distinct values of the variable:
+
+```{r}
+nhanes %>% distinct(Education)
+```
+
+## 3. Summarizing Categorical Data
+
+It is often helpful to obtain counts of how many observational units fall into each category of a categorical variable, or into each combination of categories for two categorical variables.  We will do this with the `tally` function in the `mosaic` package.
+
+```{r}
+library(mosaic)
+tally( ~ Education, data = nhanes)
+tally(Education ~ Gender, data = nhanes)
+```
+
+The first argument to the `tally` function is a formula.  With one variable, the variable goes after the `~` (this character is a tilde; it's found in the top left corner of my keyboard).  With two variables, one variable goes before the `~` and the second goes after it.  The second argument is the data frame where these variables are found.
+
+## 4. Data Wrangling
+
+In this class, we will learn about a few of the most common operations you may want to perform on data sets.  Here are the ones we've talked about so far; we'll add a couple more to this list later:
+
+ * a. Add new **variables** or modify existing **variables** (remember that variables correspond to columns of the data frame):
+    * `mutate`: add a new variable or modify an existing variable
+ * b. Keep a subset of **observational units** (rows):
+    * `filter`: keep only a subset of the observational units in the data frame that meet conditions you specify
+ * c. Arrange the **observational units** (rows) in order:
+    * `arrange`: sort the observations in order according to one of the variables
+
+All of these functions are in the `dplyr` package, so we'll need to load that package:
+
+```{r}
+library(dplyr)
+```
+
+### a. `mutate`
+
+The basic use of `mutate` looks like this:
+
+```{r, eval = FALSE}
+<name of modified data frame> <- <original data frame> %>%
+    mutate(
+        <new/modified variable 1> = <how to calculate new/modified variable 1>,
+        <new/modified variable 2> = <how to calculate new/modified variable 2>
+    )
+```
+
+Note that the `mutate` function does not necessarily modify the original data frame: it creates a second copy, and leaves the original as it was.
+
+Suppose we want to convert the subjects' weight in kilograms to a weight in pounds, and add the weight in pounds to the data frame as a new variable called `Weight_pounds`.  Here's how we can do that (there are 2.205 pounds in a kilogram):
+
+```{r}
+nhanes_with_weight_in_pounds <- nhanes %>%
+    mutate(Weight_pounds = Weight * 2.205)
+```
+
+Here's a look at the structure of the newly created data frame, `nhanes_with_weight_in_pounds`.  Note the addition of a new variable at the end called `Weight_pounds`.  If we were to look at the original `nhanes` data frame, we would see that it was not changed.
+
+```{r}
+str(nhanes_with_weight_in_pounds)
+```
+
+### b. `filter`
+
+We often want to look at a subset of the observational units in a data frame.  The `filter` command lets us do this by specifying values of the variables we want to keep.  In this class, we will use a small amount of the filtering capabilities that R provides.  Here are a few examples of some filters we will use.  As with the `mutate` command, `filter` does not modify the original data set.
+
+#### Filter according to the value of a categorical variable
+
+In the command below we keep only observational units with an `Education` level of "High School".  Note the use of two equals signs and quotes around the value we want to keep.
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Education == "High School")
+```
+
+```{r}
+head(nhanes_fewer_obs_units)
+```
+
+#### Filter according to the value of a categorical variable
+
+In the command below we keep only observational units with an `Education` level of "High School" or "Some College".  Note the use of two equals signs and quotes around the values we want to keep.  The vertical line in between the two possible values can be read as "or".  On my keyboard, that symbol is above the backslash, on the right side of the keyboard.
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Education == "High School" | Education == "Some College")
+```
+
+```{r}
+head(nhanes_fewer_obs_units)
+```
+
+#### Filter according to the value of a quantitative variable
+
+Here we keep only the observational units with an Age of at least 22:
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Age >= 22)
+```
+
+```{r}
+head(nhanes_fewer_obs_units)
+```
+
+We could also use a variety of other conditions:
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Age < 22)
+```
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Age <= 22)
+```
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Age == 22)
+```
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Age > 22)
+```
+
+#### Filter according to multiple conditions
+
+If we have multiple conditions, they can be separated by commas in the call to the filter function:
+
+```{r}
+nhanes_fewer_obs_units <- nhanes %>%
+    filter(Education == "High School" | Education == "Some College", Age > 22)
+```
+
+```{r}
+head(nhanes_fewer_obs_units)
+```
+
+### c. `arrange`
+
+The `arrange` function lets you sort the observational units in a data frame according to the values of one of the variables.
+
+#### Sort in ascending order (the default)
+
+```{r}
+nhanes_sorted <- nhanes %>%
+    arrange(Age)
+```
+
+```{r}
+head(nhanes_sorted)
+head(nhanes)
+```
+
+#### Sort in descending order
+
+To sort in descending order, we wrap the variable we want to sort by in `desc()`:
+
+```{r}
+nhanes_sorted <- nhanes %>%
+    arrange(desc(Age))
+```
+
+```{r}
+head(nhanes_sorted)
+head(nhanes)
+```
+
+
+
