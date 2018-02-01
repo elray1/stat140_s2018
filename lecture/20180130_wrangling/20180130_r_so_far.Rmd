@@ -22,7 +22,7 @@ Load a package & \verb&library(dplyr)& \\
 \midrule
 Assign a value to a variable & \verb&my_var <- 3& \\
 \midrule
-Read a csv file & \verb&nhanes <- readcsv("path/to/nhanes.csv")& \\
+Read a csv file & \verb&nhanes <- read_csv("path/to/nhanes.csv")& \\
 \midrule
 Display first few lines of a data frame & \verb&head(nhanes)& \\
 \midrule
@@ -43,8 +43,8 @@ Count number of observations in each level of a categorical variable & \verb&tal
 \midrule
 Count number of observations in each combination of levels of two categorical variables & \verb&tally(Education ~ Gender, data = nhanes)& \\
 \midrule
-Add or modify a variable in a data frame & \verb&nhanes_modified <- nhanes %>%& \\
-Add or modify a variable in a data frame & \verb&  mutate(Weight_pounds = Weight * 2.205)& \\
+Add or modify a variable & \verb&nhanes_modified <- nhanes %>%& \\
+in a data frame & \verb&  mutate(Weight_pounds = Weight * 2.205)& \\
 \midrule
 Filter observational units, & \verb&nhanes_fewer_obs_units <- nhanes %>%& \\
 character condition & \verb&  filter(Education == "High School")& \\
@@ -273,7 +273,7 @@ nhanes_fewer_obs_units <- nhanes %>%
 head(nhanes_fewer_obs_units)
 ```
 
-#### Filter according to the value of a categorical variable
+#### Filter according to the value of a categorical variable, keep multiple values
 
 In the command below we keep only observational units with an `Education` level of "High School" or "Some College".  Note the use of two equals signs and quotes around the values we want to keep.  The vertical line in between the two possible values can be read as "or".  On my keyboard, that symbol is above the backslash, on the right side of the keyboard.
 
