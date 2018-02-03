@@ -1,0 +1,1 @@
+http://ww2.amstat.org/publications/jse/v4n2/datasets.shoemaker.html

@@ -1,0 +1,1 @@
+Storks Deliver Babies (p = 0.008).  Matthews, Robert.  Teaching Statistics. Volume 22, Number 2, Summer 2000.

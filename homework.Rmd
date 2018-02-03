@@ -17,3 +17,8 @@ title: "Homework"
 |              | the Tidyverse" course on Data Camp.           |           |       |                                          |
 |              | Graded for completion only.                   |           |       |                                          |
 +--------------+-----------------------------------------------+-----------+-------+------------------------------------------+
+|    4         | "Grouping and Summarizing"                    | 2/8/2018  |  0.25 |       N/A                                |
+|              | chapter from the "Intro to                    |           |       |                                          |
+|              | the Tidyverse" course on Data Camp.           |           |       |                                          |
+|              | Graded for completion only.                   |           |       |                                          |
++--------------+-----------------------------------------------+-----------+-------+------------------------------------------+
