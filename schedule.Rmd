@@ -103,17 +103,19 @@ make_week_box("week3", TRUE, "Week 3: Feb 5 -- 9",
 
 #### Tue, Feb 6
  * **Before class**, please do the following:
-    * Homework 4 is due today; will be assigned Friday, Feb 2.
+    * Nothing new.
  * **In Class**, we will do the following:
-    * Finish off the lab about **data visualization** in R on Gryd
+    * Finish off **data visualization**
 
 #### Thu, Feb 8
  * **Before class**, please do the following:
-    * Homework 5 is due today; will be assigned Friday, Feb 2.
+    * Homework 4 is due today
  * **In class**, we will do the following:
-    * Lab about data wrangling
+    * Summaries of quantitative variables.
 
 #### Fri, Feb 9
+ * **In class**, we will do the following:
+    * More on summaries of quantitative variables.
 "
   )
 ```
