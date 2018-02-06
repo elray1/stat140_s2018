@@ -1,0 +1,288 @@
+---
+title: "Data Visualization, Part 2"
+author: ''
+date: "February 5, 2018"
+output:
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r, include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+library(readr)
+library(dplyr)
+require(mosaic)
+library(grid)
+```
+
+```{r, include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# This changes the default colors in lattice plots.
+trellis.par.set(theme=theme.mosaic())  
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+
+require(fivethirtyeight)                
+```
+
+```{r, echo = FALSE}
+senate_113 <- congress_age %>% filter(congress == 113 & chamber == "senate")
+senate_113 <- senate_113[1:100, c(4, 5, 6, 8, 9, 10, 13)]
+```
+
+## Warm Up
+
+I have loaded a data set called `senate_113` with information about the senators in the 113th US Senate (this is the senate that came into session in January 2013)
+
+Here's a first look at the data set:
+
+```{r}
+dim(senate_113)
+head(senate_113)
+```
+
+#### 1. How many observational units are in the data set?  What is each observational unit?
+
+\vspace{3cm}
+
+#### 2. What are the variables in the data set?  What type of variable is each?
+
+\newpage
+
+## Histograms
+
+Histograms are a common type of plot for displaying a quantitative variable.  The horizontal axis is divided into bins of equal width, and the height of each bar represents the number of units in that bin.  There are two common types of histograms, where the vertical axis means different things:
+
+1. **count**: The height of each bar is the number of observational units in that bin.
+2. **density**: The area of each bar is the **proportion** of observational units in that bin.  (The height is whatever it needs to be to make the area work out correctly).
+
+#### 3. Here is a histogram where the vertical axis is a count.  Based on this plot, how many senators were aged between 40 and 50?
+
+```{r, fig.height = 2}
+ggplot(data = senate_113, mapping = aes(x = age)) +
+  geom_histogram(binwidth = 5, boundary = 40)
+```
+
+\vspace{0.5cm}
+
+#### 4. Here is a histogram where the vertical axis is density.  Based on this plot, approximately what proportion of senators were aged between 55 and 60?
+
+Note that in this plot, each bin has width 5.  Remember that the formula for area is $\text{width} \times \text{height}$.
+
+```{r, fig.height=2}
+ggplot(data = senate_113, mapping = aes(x = age, y = ..density..)) +
+  geom_histogram(binwidth = 5, boundary = 40)
+```
+
+\vspace{0.5cm}
+
+Note that I will never again ask you to actually calculate a proportion like this, **but** it is important to know how you would, conceptually.
+
+## Density Plots
+
+A density plot is basically a smoothed density histogram.
+
+```{r}
+ggplot(data = senate_113, mapping = aes(x = age)) +
+  geom_density()
+```
+
+#### 5. What would the area under the curve between 40 and 50 tell you?
+
+\vspace{1cm}
+
+As with the density histogram, we won't actually calculate the area under a density curve to answer questions like this -- but, we **will** need to know what the area corresponds to.
+
+\newpage
+
+## Describing the Shape
+
+When I look at a histogram or density plot, I'm evaluating three characteristics of the plot:
+
+### A. Unimodal or Multimodal?
+
+A **mode** is a local peak in the distribution.
+
+```{r multimodal, echo = FALSE, cache = TRUE, fig.height=1.5, fig.width = 7}
+layout <- grid.layout(nrow = 1, ncol = 3, width = unit(x = rep(5, 3), units = "cm"))
+grid.newpage()
+pushViewport(viewport(layout = layout))
+
+normal_sd <- 0.5
+base_df <- data.frame(x = c(-4, 4))
+fn1 <- function(x) {dnorm(x, sd = 0.5)}
+fn2 <- function(x) {0.5 * dnorm(x, sd = 0.5) + 0.5 * dnorm(x, mean = 2, sd = 0.5)}
+fn3 <- function(x) {(1/3) * dnorm(x, sd = 0.5) + (1/3) * dnorm(x, mean = -2, sd = 0.5) + (1/3) * dnorm(x, mean = 2, sd = 0.5)}
+p1 <- ggplot(data = base_df) +
+  stat_function(fun = fn1) +
+  xlim(c(-4, 4)) +
+  ggtitle("Unimodal")
+p2 <- ggplot(data = base_df) +
+  stat_function(fun = fn2) +
+  xlim(c(-4, 4)) +
+  ggtitle("Bimodal")
+p3 <- ggplot(data = base_df) +
+  stat_function(fun = fn3) +
+  xlim(c(-4, 4)) +
+  ggtitle("Multimodal")
+
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(p3, vp = viewport(layout.pos.row = 1, layout.pos.col = 3))
+```
+
+### B. Symmetric or skewed?
+
+If a distribution is skewed, it's skewed **towards the tail**.
+
+```{r skewed, echo = FALSE, cache = TRUE, fig.height=1.5, fig.width = 7}
+layout <- grid.layout(nrow = 1, ncol = 3, width = unit(x = rep(5, 3), units = "cm"))
+grid.newpage()
+pushViewport(viewport(layout = layout))
+
+base_df <- data.frame(x = c(-100, 100))
+fn1 <- function(x) {dgamma(-1 * x, 2, 0.75)}
+fn2 <- function(x) {dnorm(x, 0, 1)}
+fn3 <- function(x) {dgamma(x, 2, 1)}
+p1 <- ggplot(data = base_df) +
+  stat_function(fun = fn1) +
+  xlim(c(-8, 0)) +
+  ggtitle("Skewed Left")
+p2 <- ggplot(data = base_df) +
+  stat_function(fun = fn2) +
+  xlim(c(-4, 4)) +
+  ggtitle("Symmetric")
+p3 <- ggplot(data = base_df) +
+  stat_function(fun = fn3) +
+  xlim(c(0, 8)) +
+  ggtitle("Skewed Right")
+
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(p3, vp = viewport(layout.pos.row = 1, layout.pos.col = 3))
+```
+
+### C. Are there any gaps or outliers?
+
+An **outlier** is a data value that "doesn't fit" with the rest of the data.
+
+```{r outlier, echo = FALSE, cache = TRUE, fig.height=1.5, fig.width = 4.67}
+layout <- grid.layout(nrow = 1, ncol = 2, width = unit(x = rep(5, 2), units = "cm"))
+grid.newpage()
+pushViewport(viewport(layout = layout))
+
+base_df <- data.frame(x = c(-100, 100))
+fn1 <- function(x) {dgamma(x, 2, 3)}
+fn2 <- function(x) {0.975 * dgamma(x, 2, 2) + 0.025 * dnorm(x, 7, 0.1)}
+p1 <- ggplot(data = base_df) +
+  stat_function(fun = fn1) +
+  xlim(c(0, 8)) +
+  ggtitle("No Outliers")
+p2 <- ggplot(data = base_df) +
+  stat_function(fun = fn2) +
+  xlim(c(0, 8)) +
+  ggtitle("Outlier")
+
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+```
+
+\newpage
+
+#### 6. Describe each of the following distributions; for each, discuss whether it is unimodal or multimodal, symmetric or skewed, and whether there are any outliers.
+
+I've taken these examples from the Bechdel Test data.  In the first example, look carefully at the histogram!
+
+```{r, echo = FALSE, message = FALSE}
+movies <- read_csv("https://mhc-stat140-2017.github.io/data/bechdel/bechdel.csv") %>%
+  mutate(
+    bechdel_test = factor(
+      bechdel_test,
+      ordered = TRUE,
+      levels = c("nowomen", "notalk", "men", "dubious", "ok")),
+    bechdel_test_binary = factor(
+      bechdel_test_binary,
+      ordered = TRUE,
+      levels = c("FAIL", "PASS")),
+    mpaa_rating = factor(
+      mpaa_rating,
+      ordered = TRUE,
+      levels = c("UNRATED", "NOT RATED", "G", "PG", "TV-PG", "PG-13", "TV-14", "R", "NC-17"))
+  )
+```
+
+```{r}
+ggplot(data = movies, mapping = aes(x = budget_2013)) +
+  geom_histogram()
+```
+
+\vspace{2cm}
+
+```{r}
+ggplot(data = movies, mapping = aes(x = imdb_rating)) +
+  geom_density()
+```
+
+\newpage
+
+## Box Plots
+
+A box plot is a graphical representation of the **5 number summary** of a data set.  The five numbers in the five number summary are:
+
+1. The maximum
+2. The 75th percentile (the number such that 75\% of the data are less than that value, and 25\% are greater than that value)
+3. The median (the number such that half of the data are less than that value and half are greater than that value)
+4. The 25th percentile (the number such that 25\% of the data are less than that value, and 75\% are greater than that value)
+5. The minimum
+
+\includegraphics{boxplot_diagram.png}
+
+Some additional terminology:
+
+ * The 25th percentile is also called the **first quartile**
+ * The 75th percentile is also called the **third quartile**
+ * The difference between the 75th percentile and the 25th percentile is called the Interquartile range (IQR).  It gives the width of an interval containing the middle half of the data.
+
+In practice, we basically only use box plots to compare the distribution of values across multiple groups.  There are better plots to use for examining the distribution for only one or two groups.
+
+\newpage
+
+Let's go back to looking at the ages of members of the US Senate.
+
+```{r}
+ggplot(data = senate_113, mapping = aes(y = age, x = party)) +
+  geom_boxplot()
+```
+
+Here are some questions you should be able to answer based on the box plots above:
+
+#### 7. Which party had the highest median age?
+
+\vspace{1cm}
+
+#### 8. The youngest member of the senate belonged to which party?
+
+\vspace{1cm}
+
+#### 9. 75\% of Republican senators were younger than what age?
+
+\vspace{1cm}
+
+#### 10. How wide of an interval would you need to cover the ages of the middle half of Democratic senators?
+
+\vspace{1cm}

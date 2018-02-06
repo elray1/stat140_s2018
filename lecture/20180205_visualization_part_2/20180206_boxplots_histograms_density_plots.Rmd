@@ -1,0 +1,127 @@
+---
+title: "Boxplots, histograms, and density plots, oh my!"
+author: ''
+date: "February 6, 2018"
+output:
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r, include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+library(ggplot2)
+require(mosaic)
+```
+
+```{r, include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# This changes the default colors in lattice plots.
+trellis.par.set(theme=theme.mosaic())  
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+# This loads the mosaic data sets.  (Could be deleted if you are not using them.)
+require(mosaicData)                
+```
+
+```{r, echo=FALSE}
+## Create a fake data set.  It's a secret at first, but the data have the same 5 number summary!
+## I got this code from Stack Overflow: see the comment by Glen_b at
+## http://stats.stackexchange.com/questions/137965/box-and-whisker-plot-for-multimodal-distribution
+set.seed(1)
+
+x1 = qnorm(ppoints(1:100,a=-.072377))
+x1 = x1/diff(range(x1))*18+10
+b = fivenum(x1)
+x2 = qnorm(ppoints(1:48));x2=x2/diff(range(x2))*.6
+x2 = c(b[1],x2+b[2],.31+b[2],b[4]-.31,x2+b[4],b[5])
+d = .1183675; x3 = ((0:34)-34/2)/34*(9-d)+(5.5-d/2)
+x3 = c(x3,rep(9.5,15),rep(10.5,15),20-x3)
+x4 = c(1,rep(b[2],24),(0:49)/49*(b[4]-b[2])+b[2],(0:24)/24*(b[5]-b[4])+b[4])
+
+example_data <- data.frame(
+  x1 = x1,
+  x2 = x2,
+  x3 = x3,
+  x4 = x4
+)
+```
+
+Here are some box (and whiskers) plots of four different data sets:
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = "Data Set 1", y = x1)) + geom_boxplot()
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = "Data Set 2", y = x2)) + geom_boxplot()
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = "Data Set 3", y = x3)) + geom_boxplot()
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = "Data Set 4", y = x4)) + geom_boxplot()
+```
+
+What can you tell me about the distributions based on these box plots?  **Shape**?  **Outliers**?  Anything else?
+
+\newpage
+
+Here are some histograms of the same data:
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x1)) + geom_histogram(binwidth = 1)
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x2)) + geom_histogram(binwidth = 1)
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x3)) + geom_histogram(binwidth = 1)
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x4)) + geom_histogram(binwidth = 1)
+```
+
+What can you tell me about the distributions based on these histograms?  **shape**?  **outliers**?  Anything else?
+
+
+\newpage
+
+Here are some density plots of the same data:
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x1)) + geom_density()
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x2)) + geom_density()
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x3)) + geom_density()
+```
+
+```{r, fig.height = 1.5}
+ggplot(data = example_data, mapping = aes(x = x4)) + geom_density()
+```
+
+What can you tell me about the distributions based on these density plots?  **shape**?  **outliers**?  Anything else?
