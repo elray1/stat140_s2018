@@ -78,7 +78,7 @@ make_week_box("week2", FALSE, "Week 2: Jan 29 -- Feb 2",
     * Finish **Homework 1** (due Monday Jan 29) and **Homework 2** (due Tuesday Jan 30; also on Data Camp)
  * **In class**, we will do the following:
     * Finish the lab about Relationships Between Multiple Categorical Variables that we started on Fri, Jan 26
-    * Briefly, review of the most important things in R so far: [pdf](lecture/20180130_wrangling/r_so_far.pdf)
+    * Briefly, review of the most important things in R so far: [pdf](lecture/20180130_wrangling/20180130_r_so_far.pdf)
 
 #### Thu, Feb 1
  * **Before class**, please do the following:
