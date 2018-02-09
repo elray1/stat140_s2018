@@ -115,7 +115,7 @@ make_week_box("week3", TRUE, "Week 3: Feb 5 -- 9",
       * Sections 3.3 through 3.8 (you should have already read Section 3.2 and parts of 3.1) of the 4th edition, or
       * The parts of Chapter 4 that you didn't read yet, in the 3rd edition.
  * **In class**, we will do the following:
-    * Summaries of quantitative variables.
+    * Summaries of quantitative variables: [pdf](lecture/20180207_summarize/20180207_summarize.pdf)
 
 #### Fri, Feb 9
  * **Before class**, please do the following:
@@ -123,7 +123,7 @@ make_week_box("week3", TRUE, "Week 3: Feb 5 -- 9",
       * Sections 6.2, 6.3, and 6.4 of the 4th edition  -- but not the sections about Kendall's Tau or Spearman's Rho
       * The parts of chapter 7 you didn't read yet, in the 3rd edition -- but not the sections about Kendall's Tau or Spearman's Rho
  * **In class**, we will do the following:
-    * Discuss correlation
+    * Continue lab from Thursday Feb 9
 "
   )
 ```
@@ -135,6 +135,8 @@ make_week_box("week4", TRUE, "Week 4: Feb 12 -- 16",
 #### Tue, Feb 13
  * **Before class**, please do the following:
     * **Homework 5** is due today; on Gryd
+ * **In class**, we will do the following:
+    * Discuss correlation
 
 #### Thu, Feb 15
 

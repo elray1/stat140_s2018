@@ -1,0 +1,174 @@
+---
+title: "Summarizing Numeric Variables"
+author: ''
+date: "February 5, 2018"
+output:
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+header-includes:
+   - \usepackage{booktabs}
+---
+
+
+```{r, include=FALSE, message = FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+library(readr)
+library(dplyr)
+require(mosaic)
+library(grid)
+```
+
+```{r, include=FALSE, message = FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# This changes the default colors in lattice plots.
+trellis.par.set(theme=theme.mosaic())  
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+
+require(fivethirtyeight)                
+```
+
+# Warm Up
+
+Reminder of definitions from your reading:
+
+Suppose we observe $n$ numbers, $x_1, \ldots, x_n$.
+
+There are two commonly used statistics used to summarize the \textbf{center} of the distribution of these values:
+
+ * The \textbf{mean} is the average of these values (add them up and divide by $n$).  We use $\bar{x}$ to denote the mean:
+
+$$\bar{x} = \frac{\sum_{i = 1}^n x_i}{n} = \frac{x_1 + \cdots + x_n}{n}$$
+
+ * The \textbf{median} is the middle value when you arrange them in order.  (If the sample size $n$ is even, you take the average of the middle two values)
+
+
+## The situation:
+
+It's 2013, and 6 friends are hanging out at their local bar.  Their incomes are \$30,000, \$32,000, \$34,000, \$36,000, \$38,000, and \$40,000.
+
+### What is their mean income?
+
+\vspace{1cm}
+
+### What is their median income?
+
+\vspace{1cm}
+
+## In walks BILL GATES!
+
+According to the internet, in 2013 Bill Gates had an income of \$11.5 billion (in case you're curious, that works out to \$23,148 per minute).
+
+### What is the mean income of the 6 friends and Bill Gates?  (Note that if you write it out with all the zeros, 11.5 billion is 11500000000; there are 8 zeros)
+
+\vspace{1cm}
+
+### What is the median income of the 6 friends and Bill Gates?
+
+\vspace{1cm}
+
+\newpage
+
+# Summaries of Spread
+
+The mean and median tell you about the **center** of a distribution.
+
+There are three common measures of the **spread** of a distribution (how "wide" is it?):
+
+1. We saw the **inter-quartile range** (IQR) last class:
+
+IQR = Q3 - Q1 = 75th percentile - 25th percentile
+
+The IQR is the width of an interval covering the middle half of the data.
+
+2. The **variance** is the (almost) average squared difference of each observation from the mean.
+
+$$\text{Variance} = \frac{\sum_{i = 1}^n (x_i - \bar{x})^2}{n - 1} = \frac{(x_1 - \bar{x})^2 + (x_2 - \bar{x})^2 + \cdots + (x_n - \bar{x})^2}{n - 1}$$
+
+3. The **standard deviation** is the square root of the variance.  Intuitively, you can think of it as the average distance of the data points from the mean (although technically, that's not exactly right).
+
+$$\text{Standard Deviation} = \sqrt{\text{Variance}} = \sqrt{\frac{\sum_{i = 1}^n (x_i - \bar{x})^2}{n - 1}}$$
+
+### What is the IQR of the friends' incomes, not including Bill Gates?
+
+You can find Q1 as the median of the values in the data set that are less than the median of the whole data set.
+
+You can find Q3 as the median of the values in the data set that are greater than the median of the whole data set.
+
+\vspace{2cm}
+
+### What is the variance of the friends' incomes, not including Bill Gates?
+
+\vspace{2cm}
+
+### What is the standard deviation of the friends' incomes, not including Bill Gates?
+
+\vspace{2cm}
+
+I calculated these values for the friends' incomes including Bill Gates, and I got:
+
+IQR = 6,000
+
+Variance = 1.89e+19 = $1.89 \times 10^{19}$ = 18900000000000000000
+
+Standard Deviation = 4.35e+09 = $4.35 \times 10^9$ = 4350000000
+
+\newpage
+
+## Do babies born to mothers who smoked during pregnancy weigh less on average than babies born to mothers who did not smoke?
+
+Low birth weights are a risk factor for health problems later in life, so this is important!
+
+Here is a data set with data on a sample of randomly selected babies who were born in North Carolina in 2004, with some information about the mother and the babies' weights in grams:
+
+```{r, echo = FALSE, message = FALSE}
+library(resampledata)
+NCBirths2004 <- NCBirths2004[, 1:7]
+```
+
+```{r}
+dim(NCBirths2004)
+head(NCBirths2004)
+ggplot(data = NCBirths2004, mapping = aes(x = Weight, color = Tobacco)) + geom_density()
+```
+
+\newpage
+
+```{r}
+NCBirths2004 %>%
+  group_by(Tobacco) %>%
+  summarize(
+    mean_wt = mean(Weight),
+    median_wt = median(Weight),
+    q1_wt = quantile(Weight, probs = 0.25),
+    q3_wt = quantile(Weight, probs = 0.75),
+    iqr_wt = IQR(Weight),
+    var_wt = var(Weight),
+    sd_wt = sd(Weight)
+  )
+```
+
+### Which of these statistics can we use to summarize the distributions of baby weights in each group?
+
+\vspace{1cm}
+
+### Is there evidence that a mother's tobacco usage affects the baby's weight?
+
+\vspace{1cm}
+
+
+
