@@ -99,7 +99,7 @@ make_week_box("week2", FALSE, "Week 2: Jan 29 -- Feb 2",
 ```
 
 ```{r, echo = FALSE, results='asis'}
-make_week_box("week3", TRUE, "Week 3: Feb 5 -- 9",
+make_week_box("week3", FALSE, "Week 3: Feb 5 -- 9",
 "
 
 #### Tue, Feb 6
@@ -136,9 +136,16 @@ make_week_box("week4", TRUE, "Week 4: Feb 12 -- 16",
  * **Before class**, please do the following:
     * **Homework 5** is due today; on Gryd
  * **In class**, we will do the following:
-    * Discuss correlation
+    * Overview of scatter plots and correlation: [pdf](lecture/20180213_correlation/20180213_correlation_summary.pdf)
+    * Example of scatter plots and correlation as a class: [pdf](lecture/20180213_correlation/20180213_correlation.pdf)
+    * Lab 6 on Gryd
+    * If time, guess the correlation: [pdf](lecture/20180213_correlation/20180213_plots_correlation.pdf)
 
 #### Thu, Feb 15
+ * **Before class**, please do the following:
+    * **Reading**: Chapter 11 of SDM 4th edition or Chapter 12 of SDM 3rd edition
+    * **Finish lab** from Tuesday if you didn't finish in class; solutions will be posted.
+    * Start on **Homework 6**
 
 #### Fri, Feb 16
 "
@@ -150,6 +157,8 @@ make_week_box("week5", TRUE, "Week 5: Feb 19 -- 23",
 "
 
 #### Tue, Feb 20
+ * **Before class**, please do the following:
+    * **Homework 6** is due today; on Gryd
 
 #### Thu, Feb 22
 
@@ -163,6 +172,7 @@ make_week_box("week6", TRUE, "Week 6: Feb 26 -- Mar 2",
 "
 
 #### Tue, Feb 27
+ * **Midterm 1**; covers material from Chapters 1 -- 4 and 6.
 
 #### Thu, Mar 1
 

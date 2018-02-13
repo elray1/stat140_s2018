@@ -1,0 +1,256 @@
+---
+title: "Scatter Plots and Correlation: Summary of Ideas"
+author: ""
+date: ""
+output:
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+</style>
+
+```{r setup, include=FALSE}
+require(ggplot2)
+require(grid)
+require(dplyr)
+require(tidyr)
+```
+
+
+## Describing the Relationship Between Two Quantitative Variables
+
+### A. Shape (linear or curved)
+
+```{r shape, echo = FALSE, cache = TRUE, fig.height=1.5, fig.width = 7}
+layout <- grid.layout(nrow = 1, ncol = 2, width = unit(x = rep(5, 2), units = "cm"))
+grid.newpage()
+pushViewport(viewport(layout = layout))
+
+set.seed(1)
+
+n <- 50
+x1 <- runif(n, 0, 4)
+df1 <- data.frame(
+  x = x1,
+  y = rnorm(n, mean = x1, sd = 0.1)
+)
+
+x2 <- x1
+df2 <- data.frame(
+  x = x2,
+  y = rnorm(n, mean = 4 * exp(x2) / exp(4), sd = 0.1)
+)
+
+p1 <- ggplot(data = df1, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Linear")
+
+p2 <- ggplot(data = df2, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Curved")
+
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+```
+
+\vspace{-0.5cm}
+### B. Are there any gaps or outliers?
+
+```{r outliers, echo = FALSE, cache = TRUE, fig.height=1.5, fig.width = 7}
+layout <- grid.layout(nrow = 1, ncol = 3, width = unit(x = rep(6, 3), units = "cm"))
+grid.newpage()
+pushViewport(viewport(layout = layout))
+
+set.seed(1)
+
+n <- 50
+x1 <- runif(n, 0, 4)
+df1 <- data.frame(
+  x = x1,
+  y = rnorm(n, mean = x1, sd = 0.1)
+)
+
+x2 <- c(runif(35, 0, 2), runif(15, 3, 4))
+df2 <- data.frame(
+  x = x2,
+  y = rnorm(n, mean = x2, sd = 0.1)
+)
+
+x3_no <- runif(35, 0, 2)
+x3 <- c(x3_no, 4, 0.5)
+df3 <- data.frame(
+  x = x3,
+  y = c(rnorm(35, mean = x3_no, sd = 0.1), 4, 3.5),
+  outlier = c(rep("Not an\noutlier", 35), "Outlier", "Outlier")
+)
+
+
+p1 <- ggplot(data = df1, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("No Gaps or Outliers")
+
+p2 <- ggplot(data = df2, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Gap")
+
+p3 <- ggplot(data = df3, mapping = aes(x=x, y=y, color = outlier)) +
+  geom_point() +
+  scale_color_manual(values = c("black", "red")) +
+  xlim(c(0, 4)) +
+  ggtitle("Outliers") +
+  theme(legend.position = "none")
+
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(p3, vp = viewport(layout.pos.row = 1, layout.pos.col = 3))
+```
+
+\vspace{-0.5cm}
+### C. Direction (positive or negative association)
+
+**Positive association**: as one variable increases, the other variable also tends to increase.
+
+**Negative association**: as one variable increases, the other variable tends to decrease.
+
+```{r direction, echo = FALSE, cache = TRUE, fig.height=1.5, fig.width = 7}
+layout <- grid.layout(nrow = 1, ncol = 2, width = unit(x = rep(5, 2), units = "cm"))
+grid.newpage()
+pushViewport(viewport(layout = layout))
+
+set.seed(1)
+
+n <- 50
+x1 <- runif(n, 0, 4)
+df1 <- data.frame(
+  x = x1,
+  y = rnorm(n, mean = x1, sd = 0.1)
+)
+
+x2 <- x1
+df2 <- data.frame(
+  x = x2,
+  y = rnorm(n, mean = 4 - x2, sd = 0.1)
+)
+
+p1 <- ggplot(data = df1, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Positive")
+
+p2 <- ggplot(data = df2, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Negative")
+
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+```
+
+\vspace{-0.5cm}
+### D. Strength (weak, moderate, or strong)
+
+The relationship is strong if the points fall close to the trend, and weak if they do not.
+
+```{r strength, echo = FALSE, cache = TRUE, fig.height=1.5, fig.width = 7}
+layout <- grid.layout(nrow = 1, ncol = 3, width = unit(x = rep(5, 3), units = "cm"))
+grid.newpage()
+pushViewport(viewport(layout = layout))
+
+set.seed(1)
+
+n <- 50
+x1 <- runif(n, 0, 4)
+df1 <- data.frame(
+  x = x1,
+  y = rnorm(n, mean = x1, sd = 0.1)
+)
+
+x2 <- x1
+df2 <- data.frame(
+  x = x2,
+  y = rnorm(n, mean = x2, sd = 1)
+)
+
+x3 <- x1
+df3 <- data.frame(
+  x = x3,
+  y = rnorm(n, mean = x3, sd = 2)
+)
+
+p1 <- ggplot(data = df1, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Strong")
+
+p2 <- ggplot(data = df2, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Moderate")
+
+p3 <- ggplot(data = df3, mapping = aes(x=x, y=y)) +
+  geom_point() +
+  xlim(c(0, 4)) +
+  ggtitle("Weak")
+
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(p3, vp = viewport(layout.pos.row = 1, layout.pos.col = 3))
+```
+
+
+## Correlation
+
+The correlation is **only useful if the relationship is linear and there are no outliers**.
+
+If those conditions are met, it summarizes:
+
+ * **Strength**:
+    * Strong relationship if correlation is close to $1$ or $-1$
+    * Weak relationship if correlation is close to $0$
+ * **Direction**:
+    * Positive association if correlation is positive
+    * Negative association if correlation is negative.
+
+## Example of Calculation in R
+
+```{r, echo = FALSE}
+data(iris)
+iris <- transmute(iris,
+  sepal_length = Sepal.Length,
+  sepal_width = Sepal.Width,
+  petal_length = Petal.Length,
+  petal_width = Petal.Width,
+  species = Species)
+```
+
+Suppose we want to calculate the correlation between `petal_length` and `petal_width` in the following data set with measurements on 150 iris flowers:
+
+```{r}
+head(iris)
+```
+
+We can do this with the following code:
+
+```{r, echo = TRUE}
+iris %>%
+  select(petal_length, petal_width) %>%
+  cor()
+```
+
+The correlation between `petal_length` and `petal_width` is about 0.963.  This indicates a strong, positive association between these variables.  We'd need to check a scatter plot to be sure it was a useful summary of the relationship though!

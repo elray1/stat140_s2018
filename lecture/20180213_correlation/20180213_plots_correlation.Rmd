@@ -1,0 +1,308 @@
+---
+title: ""
+author: ""
+date: ""
+output: pdf_document
+---
+
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(mvtnorm)
+```
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(1)
+
+n <- 100
+mu <- c(0, 0)
+sigma <- matrix(
+  c(1, 0,
+    0, 1),
+  nrow = 2)
+temp <- rmvnorm(n, mean = mu, sigma = sigma)
+example <- data.frame(
+  x = temp[, 1],
+  y = temp[, 2]
+)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+The correlation is useful in this example.
+
+\newpage
+
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(1)
+
+n <- 100
+mu <- c(0, 0)
+sigma <- matrix(
+  c(1, 0.9,
+    0.9, 1),
+  nrow = 2)
+temp <- rmvnorm(n, mean = mu, sigma = sigma)
+example <- data.frame(
+  x = temp[, 1],
+  y = temp[, 2]
+)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+The correlation is useful in this example.
+
+\newpage
+
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(1)
+
+n <- 100
+mu <- c(0, 0)
+sigma <- matrix(
+  c(1, -0.6,
+    -0.6, 1),
+  nrow = 2)
+temp <- rmvnorm(n, mean = mu, sigma = sigma)
+example <- data.frame(
+  x = temp[, 1],
+  y = temp[, 2]
+)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+The correlation is useful in this example.
+
+\newpage
+
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(1)
+
+n <- 100
+mu <- c(0, 0)
+sigma <- matrix(
+  c(1, 0,
+    0, 1),
+  nrow = 2)
+temp <- rmvnorm(n, mean = mu, sigma = sigma)
+temp <- rbind(temp, matrix(c(10, 10), nrow = 1))
+
+example <- data.frame(
+  x = temp[, 1],
+  y = temp[, 2]
+)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+The correlation is not useful in this example; there is an outlier.
+
+\newpage
+
+
+## Guess the correlation
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(1)
+
+n <- 30
+example <- data.frame(
+  x = seq(from = -10, to = 10, length = n),
+  y = seq(from = 10, to = -10, length = n)
+)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+The correlation is useful in this example.
+
+\newpage
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(1)
+
+n <- 30
+example <- data.frame(
+  x = seq(from = -10, to = 10, length = n),
+  y = rep(1, n)
+)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+R says the correlation is `NA`, but we define the correlation to be 0.  The correlation is useful in this example.
+
+\newpage
+
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(123)
+
+n <- 100
+example <- data.frame(
+  x = runif(n, -10, 10)
+)
+example$y <- example$x^2 + rnorm(n, mean = 0, sd = 5)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+Correlation is not useful; non-linear relationship
+
+\newpage
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(123)
+
+n <- 300
+example <- data.frame(
+  x = runif(n, -20, 20)
+)
+example$y <- cos(example$x) + rnorm(n, 0, 0.1)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+Correlation is not useful; non-linear relationship.
+
+\newpage
+
+## Guess the correlation; is the correlation useful in this example?
+
+```{r, echo=FALSE, message=FALSE}
+set.seed(123)
+
+n <- 100
+example <- data.frame(
+  x = runif(n, 0, 3)
+)
+example$y <- exp(example$x) + rnorm(n, 0, 0.1)
+```
+
+```{r, echo = TRUE, fig.height = 6, fig.width = 6}
+ggplot(data = example, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+\newpage
+
+```{r, echo = TRUE}
+example %>%
+  cor()
+```
+
+Correlation is not useful; non-linear relationship

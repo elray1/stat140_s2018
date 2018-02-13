@@ -1,0 +1,92 @@
+---
+title: "Scatter Plots and Correlation: Example"
+author: ""
+date: ""
+output:
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+</style>
+
+```{r setup, include=FALSE}
+require(ggplot2)
+require(grid)
+require(dplyr)
+require(tidyr)
+require(readr)
+```
+
+## Today's example: Iris flower measurements
+
+\begin{figure}[!h]
+\centering
+\includegraphics{Iris_germanica_wikipedia.jpg}
+\caption{Iris flower (image source: Wikipedia)}
+\end{figure}
+
+#### 1. Based on the plot below, what are the observational units, variable(s), and variable type(s) in this data set?
+
+\vspace{1cm}
+
+#### 2. What did the code I used to make the plot look like? (note the data are in a data frame named `iris`)
+
+\vspace{2cm}
+
+```{r, echo=FALSE, message=FALSE, fig.height = 3.5, fig.width=6}
+data(iris)
+iris <- transmute(iris,
+  sepal_length = Sepal.Length,
+  sepal_width = Sepal.Width,
+  petal_length = Petal.Length,
+  petal_width = Petal.Width,
+  species = Species)
+
+ggplot() +
+  geom_point(mapping = aes(x = petal_length, y = petal_width), data = iris) +
+  ggtitle("Petal Length (cm) vs. Petal Width (cm) for 150 Iris Flowers")
+```
+
+\newpage
+
+## Describe the relationship...
+
+#### 3. Describe the shape of the relationship between these variables
+
+\vspace{2cm}
+
+#### 4. Are there any gaps or outliers?
+
+\vspace{2cm}
+
+#### 5. Would it be appropriate to use the correlation to summarize the strength and direction of the relationship between these variables?  Why or why not?
+
+\vspace{2cm}
+
+In case you answered "yes" to problem 5, you may use the following R output in answering the questions below:
+
+```{r, echo = TRUE}
+iris %>%
+  select(petal_length, petal_width) %>%
+  cor()
+```
+
+#### 6. Describe the strength of the relationship between these variables, specifically referencing the scatter plot and the correlation if appropriate.
+
+\vspace{2cm}
+
+#### 7. Describe the direction of the relationship between these variables, specifically referencing the scatter plot and the correlation if appropriate.
+
+\vspace{2cm}
