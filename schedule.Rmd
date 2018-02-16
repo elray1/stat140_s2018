@@ -148,6 +148,10 @@ make_week_box("week4", TRUE, "Week 4: Feb 12 -- 16",
     * Start on **Homework 6**
 
 #### Fri, Feb 16
+ * **In class**, we will do the following:
+    * Article 1: peanut allergies [pdf](lecture/20180216_experimental_design/Du_Toit_et_al_-_peanut_consumption.pdf)
+    * Article 2: colds and meditation [pdf](lecture/20180216_experimental_design/colds-and-meditation_Annals-Family-Medicine_12.pdf)
+    * Article 3: coffee drinking and mortality [pdf](lecture/20180216_experimental_design/coffee-drinking-and-mortality_NEJM-12.pdf)
 "
   )
 ```

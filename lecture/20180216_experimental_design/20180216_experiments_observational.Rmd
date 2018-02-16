@@ -1,0 +1,85 @@
+---
+title: "Stat 140 Experiments and Observational Studies"
+author: "Evan Ray"
+date: "February 16, 2018"
+output:
+  pdf_document:
+    fig_height: 2.8
+    fig_width: 6
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+## Abstract 1
+
+After reading the abstract of "Randomized Trial of Peanut Consumption in Infants at Risk for Peanut Allergy", answer the following questions:
+
+As described in the methods section of the abstract, at the start of the study, each infant was tested for peanut allergy.  The researchers then randomly assigned the babies to either a peanut consumption group or a peanut avoidance group.  When they did this assignment, the researchers made sure that some babies who tested positive for an initial allergy were assigned to the peanut consumption group, and some were assigned to the peanut avoidance group; similarly, some babies who tested negative for the initial peanut allergy were assigned to the peanut consumption group and some were assigned to the peanut avoidance group.
+
+#### 1. Why was it important to conduct the initial allergy test and then make sure that some babies who showed an initial allergy were assigned to each of the peanut consumption/avoidance groups, and similarly for the babies who did not have an initial allergy?
+
+\vspace{4cm}
+
+#### 2. Why was it important to randomize which babies were assigned to the peanut consumption and avoidance groups, rather than letting the families choose which group they were in?
+
+\vspace{4cm}
+
+#### 3. What are the explanatory and response variables?
+
+\newpage
+
+## Abstract 2
+
+After reading the abstract of "Meditation or Exercise for Preventing Acute Respiratory Infection: A Randomized Controlled Trial", answer the following questions:
+
+#### 1. Is this an observational study or an experiment?
+
+\vspace{2cm}
+
+#### 2. What are the explanatory and response variables?
+
+\vspace{2cm}
+
+#### 3. In what way was randomization used in the study?
+
+\vspace{2cm}
+
+#### 4. What were the treatments used in the study?
+
+\vspace{2cm}
+
+#### 5. What sources of bias might be present?
+
+\vspace{2cm}
+
+#### 6. Was there any evidence of blinding?
+
+\vspace{2cm}
+
+#### 7. What did the study conclude?
+
+## Abstract 3
+
+After reading the abstract of "Association of Coffee Drinking with Total and Cause-Specific Mortality", answer the following questions:
+
+#### 1. Is this an observational study or an experiment?
+
+\vspace{2.5cm}
+
+#### 2. Is the study prospective or retrospective?
+
+\vspace{2.5cm}
+
+#### 3. What are the explanatory and response variables?
+
+\vspace{2.5cm}
+
+#### 4. How did the authors adjust for possible sources of confounding?
+
+\vspace{2.5cm}
+
+#### 5. What did the study conclude?

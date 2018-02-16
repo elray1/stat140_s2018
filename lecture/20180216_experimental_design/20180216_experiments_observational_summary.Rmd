@@ -1,0 +1,70 @@
+---
+title: "Experiments and Observational Studies"
+author: "Evan L. Ray"
+date: "February 16, 2018"
+output:
+  pdf_document:
+    fig_height: 2.8
+    fig_width: 6
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(readr)
+```
+
+## Goal: identify causal associations
+
+ * Establish whether there is a link between an **explanatory variable** and a **response variable**
+ * Does changing the value of the explanatory variable **cause** the value of the response variable to change?
+ * Example:
+    * peanut consumption or avoidance is **explanatory variable**
+    * peanut allergy is **response variable**
+
+## 2 Types of Studies
+
+ 1. **Experiments**: The explanatory variable(s) are controlled by the researcher (and the researcher randomly assigns the value of the explanatory variable to each subject).
+    * Researcher assigns babies to the peanut consumption or peanut avoidance groups
+
+ 2. **Observational** studies: the explanatory variable(s) are not manipulated or controlled by the researcher.
+    * Babies either end up consuming peanut or avoiding peanuts, for reasons outside of the researcher's control.
+
+ * To demonstrate a **causal** relationship, need to run an **experiment**.
+
+## Confounding
+
+ * A **confounder** is a variable that is associated with both the explanatory variable and the response variable, but is not in the `causal pathway'.
+ 
+Example: Suppose we let families choose whether their child is in the peanut consumption group or the peanu avoidance group...
+
+\includegraphics[width=0.7\textwidth]{confounding_peanuts.png}
+
+\newpage
+
+## Four Priciples of Experimental Design
+
+**Goal: Prevent/Limit Confounding**
+
+ * **Control**: Control sources of variation other than the factors we are testing by making conditions as similar as possible for all treatment groups.
+    * If you give children in the peanut consumption group allergy medicine, also give it to children in the peanut avoidance group
+
+ * **Randomization**: Subjects/experimental units are assigned to treatments at random to equalize the effects of unknown or uncontrollable sources of variation.
+
+ * **Replication**: Each treatment is applied to more than one subject/experimental unit.
+ 
+ * **Blocking**: Group together subjects/experimental units that are similar in important ways that you cannot control, then randomize the assignment of treatments within each of these groups, or blocks.
+    * Block according to intial allergy test results.
+
+## What to do in Observational Studies??
+
+We can't do control or randomization or blocking!!
+
+ * **Matching**: Find study participants who:
+     * have different levels of the explanatory variables of interest, but
+     * are similar in ways that are not directly being studied
+     * compare values of the response variable between these matched participants.
+
+This is the closest to blocking/randomization that you can get in an observational study.
