@@ -146,9 +146,16 @@ make_week_box("week4", TRUE, "Week 4: Feb 12 -- 16",
     * **Reading**: Chapter 11 of SDM 4th edition or Chapter 12 of SDM 3rd edition
     * **Finish lab** from Tuesday if you didn't finish in class; solutions will be posted.
     * Start on **Homework 6**
+ * **In class**, we will do the following:
+    * Review ideas from Chapter 11
+    * Lab 7 on Gryd: sampling
 
 #### Fri, Feb 16
+ * **Before class**, please do the following:
+    * **Reading**: Chapter 12 of SDM 4th edition or Chapter 13 of SDM 3rd edition
  * **In class**, we will do the following:
+    * Overview of Chapter 12: [pdf](lecture/20180216_experimental_design/20180216_experiments_observational_summary.pdf)
+    * Look at some examples of published articles.  Blank:  [pdf](lecture/20180216_experimental_design/20180216_experiments_observational.pdf) Solutions: [pdf](lecture/20180216_experimental_design/20180216_experiments_observational_solutions.pdf)
     * Article 1: peanut allergies [pdf](lecture/20180216_experimental_design/Du_Toit_et_al_-_peanut_consumption.pdf)
     * Article 2: colds and meditation [pdf](lecture/20180216_experimental_design/colds-and-meditation_Annals-Family-Medicine_12.pdf)
     * Article 3: coffee drinking and mortality [pdf](lecture/20180216_experimental_design/coffee-drinking-and-mortality_NEJM-12.pdf)
@@ -163,10 +170,17 @@ make_week_box("week5", TRUE, "Week 5: Feb 19 -- 23",
 #### Tue, Feb 20
  * **Before class**, please do the following:
     * **Homework 6** is due today; on Gryd
+ * **In class**, we will do the following:
+    * **Example** connecting course ideas together and introducing probability
 
 #### Thu, Feb 22
+ * **In class**, we will do the following:
+    * **Quiz** on material from Chapters 1-4, 6; definition of sampling distribution
+    * Start on probability
 
 #### Fri, Feb 23
+ * **In class**, we will do the following:
+    * Probability continued
 "
   )
 ```

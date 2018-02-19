@@ -1,0 +1,95 @@
+---
+title: "Stat 140 Experiments and Observational Studies"
+author: "Evan Ray"
+date: "February 16, 2018"
+output:
+  pdf_document:
+    fig_height: 2.8
+    fig_width: 6
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+## Abstract 1
+
+After reading the abstract of "Randomized Trial of Peanut Consumption in Infants at Risk for Peanut Allergy", answer the following questions:
+
+As described in the methods section of the abstract, at the start of the study, each infant was tested for peanut allergy.  The researchers then randomly assigned the babies to either a peanut consumption group or a peanut avoidance group.  When they did this assignment, the researchers made sure that some babies who tested positive for an initial allergy were assigned to the peanut consumption group, and some were assigned to the peanut avoidance group; similarly, some babies who tested negative for the initial peanut allergy were assigned to the peanut consumption group and some were assigned to the peanut avoidance group.
+
+#### 1. Why was it important to conduct the initial allergy test and then make sure that some babies who showed an initial allergy were assigned to each of the peanut consumption/avoidance groups, and similarly for the babies who did not have an initial allergy?
+
+There are two variables that could potentially affect whether a child has a peanut allergy at the age of 5 years old: whether or not the child has an initial allergy, and whether or not the child consumes peanuts.  In order to be able to distinguish the effects of these two variables on whether the child has an allergy at 5 years old, we need to ensure that some children with the initial allergy avoid peanuts and some with the initial allergy consume peanuts; and that some children without the initial allergy avoid peanuts and some without the initial allergy consume peanuts.
+
+To see that this is necessary, imagine what might happen otherwise.  For example, suppose that all of the children with the intial allergy avoided peanuts, and all of the children without an intial allergy consumed peanuts.  If the children in the peanut consumption group did not have allergies at the age of 5 but the children in the peanut avoidance group did have allergies at 5 years old, that could be for either of two reasons: children with an allergy as a baby will tend to still have allergies at 5 years old, or children who avoid peanuts will be more likely to develop allergies than children who consume peanuts.  We can't tell which of these explanations is accurate (or whether they are both accurate), because the same children were in both groups.  This is an example of **confounding**, which can be prevented by **blocking** according to the results of the intial allergy test.
+
+#### 2. Why was it important to randomize which babies were assigned to the peanut consumption and avoidance groups, rather than letting the families choose which group they were in?
+
+The reasoning here is similar to the reasoning for part 1, but randomization helps with other variables the researchers may not have been aware of, in addition to the initial allergy test results.
+
+#### 3. What are the explanatory and response variables?
+
+The explanatory variable of primary interest to the researchers is peanut consumption or avoidance; an additional explanatory variable is whether or not the child has an initial allergy as a baby.  The response variable is whether or not the child has a peanut allergy at the age of 5 years old.
+
+\newpage
+
+## Abstract 2
+
+After reading the abstract of "Meditation or Exercise for Preventing Acute Respiratory Infection: A Randomized Controlled Trial", answer the following questions:
+
+#### 1. Is this an observational study or an experiment?
+
+This is an experiment since the subjects were randomly assigned to the treatment groups.
+
+#### 2. What are the explanatory and response variables?
+
+The explanatory variables are whether or not a subject meditated, and whether or not the subject did moderate-intensity sustained exercise.  The response variables were several different measures of the duration and severity of acute respiratory illness the subjects developed.
+
+#### 3. In what way was randomization used in the study?
+
+The subjects were randomly assigned to the exercise or meditation groups.
+
+#### 4. What were the treatments used in the study?
+
+The treatments were: 1. meditation; 2. exercise; or 3. no intervention.
+
+#### 5. What sources of bias might be present?
+
+Bias is present when the sample statistics calculated from a sample are not representative of the corresponding population parameters.
+
+From the "Recruitment and Monitoring" subsection of the methods section, we see that the subjects were volunteers.  With volunteer subjects, it is always possible that there could be a systematic difference between the subject participants and the general population.  For example, perhaps the people who volunteered for the study are more concerned about the flu, and their health and self-care routines will be different than the general population.  On the other hand, from the "Participants" subsection of the methods section, we see that the subjects reported "either 2 or more colds in the last 12 months or an average of 1 or more cold per year."  Additionally, "exclusion criteria were previous training or current practice of meditation, moderate exercise at least 2 times a week or vigorous exercise at least 1 time a week, and a score of less than 24 points on the Folstein Mini-Mental State Examination or more than 14 points on the 9-item Patient Health Questionnaire (PHQ-9) depression screen..."  It could be that these exclusion criteria will result in systematic differences between the study participants and the population at large that limit our ability to extend the results of the study to the population.
+
+#### 6. Was there any evidence of blinding?
+
+No blinding was used; the subjects and researchers knew what treatment each participant was assigned to.
+
+#### 7. What did the study conclude?
+
+Meditation reduced the severity and duration of accute respiratory illness in the subject particpants, and there was some indication that exercise may help as well.
+
+## Abstract 3
+
+After reading the abstract of "Association of Coffee Drinking with Total and Cause-Specific Mortality", answer the following questions:
+
+#### 1. Is this an observational study or an experiment?
+
+This is an observational study; the researchers did not assign the treatments to the subject participants.
+
+#### 2. Is the study prospective or retrospective?
+
+The study is prospective; the researchers selected participants to follow, and then examined their medical status during follow-up years.
+
+#### 3. What are the explanatory and response variables?
+
+The explanatory variable of primary interest is whether or not an individual drank coffee, and if so how many cups of coffee they drank.  The subjects also accounted for other variables which might affect risk of mortality, such as smoking.  The response variable was risk of death.
+
+#### 4. How did the authors adjust for possible sources of confounding?
+
+They included many variables that are related to mortality in their models.  Essentially, this allowed them to compare mortality rates among people who had different coffee-drinking status, but were similar on other characteristics that affected their health.  This is similar to the use of matching.
+
+#### 5. What did the study conclude?
+
+The study found that overall, coffee drinkers had a higher risk of death, but coffee drinkers were also likely to engage in other behaviors such as tobacco smoking that were associated with higher mortality rates.  Among people with similar characteristics (e.g., among smokers and among non-smokers), coffee drinkers had lower mortality rates than non-coffee drinkers.
