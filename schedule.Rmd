@@ -175,7 +175,7 @@ make_week_box("week5", TRUE, "Week 5: Feb 19 -- 23",
 
 #### Thu, Feb 22
  * **In class**, we will do the following:
-    * **Quiz** on material from Chapters 1-4, 6; definition of sampling distribution
+    * **Quiz** on material from HW 5
     * Start on probability
 
 #### Fri, Feb 23
@@ -190,9 +190,12 @@ make_week_box("week6", TRUE, "Week 6: Feb 26 -- Mar 2",
 "
 
 #### Tue, Feb 27
- * **Midterm 1**; covers material from Chapters 1 -- 4 and 6.
+ * **In class**, we will do the following:
+    * **Quiz** on material from HW 6
 
 #### Thu, Mar 1
+ * **Before class**, please do the following:
+    * **Homework 7** due today.
 
 #### Fri, Mar 2
 "
@@ -202,8 +205,11 @@ make_week_box("week6", TRUE, "Week 6: Feb 26 -- Mar 2",
 ```{r, echo = FALSE, results='asis'}
 make_week_box("week7", TRUE, "Week 7: Mar 5 -- 9",
 "
+ * **Midterm 1** some time this week; covers material from Chapters 1 -- 4, 6.  Take home.
 
 #### Tue, Mar 6
+ * **Quiz** on material from HW 7
+ * Take-home midterm distributed?
 
 #### Thu, Mar 8
 

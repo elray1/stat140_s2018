@@ -1,0 +1,171 @@
+---
+title: "Stat 140 - Quiz 1 Sample"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+## What's Your Name? __________________________________
+
+## Which section are you in? _______________________________
+
+\textbf{This is a sample quiz.  For the real quiz, I will use a different data set, but will pick roughly 2-3 of the questions that are below and adapt them to the new data set with minimal modification.}
+
+Below are the first few rows of a data frame named \texttt{NHANES}.  NHANES stands for "National Health and Nutrition Examination Surveys", and the data frame contains information about the health of randomly sampled Americans.
+
+```{r, load_data, message = FALSE, echo = FALSE}
+library(NHANES)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(mosaic)
+
+NHANES <- NHANES[, c(1, 3, 4, 17, 20, 21, 25, 26, 40)]
+NHANES <- as.data.frame(NHANES)
+NHANES <- distinct(NHANES)
+```
+
+```{r, message=FALSE, echo = FALSE}
+head(NHANES)
+```
+
+### 1. What is each observational unit in this data set?
+
+\vspace{2cm}
+
+### 2. For each of the following variables, is that variable categorical or quantitative?  If it is categorical, is it ordinal or nominal?
+
+* `Gender`
+* `Height`
+* `Diabetes`
+
+### 3. The following command counts how many observational units are in each combination of levels of the gender and diabetes variables.
+
+```{r, echo = FALSE}
+NHANES_orig <- NHANES
+NHANES <- NHANES %>% filter(!is.na(Diabetes))
+```
+
+```{r}
+tally(Diabetes ~ Gender, data = NHANES)
+```
+
+```{r, echo = FALSE}
+NHANES <- NHANES_orig
+```
+
+#### a. Calculate the joint distribution of Diabetes and Gender
+
+\vspace{3cm}
+
+#### b. Calculate the marginal distribution of Diabetes
+
+\vspace{3cm}
+
+#### c. Calculate the conditional distribution of Diabetes given that the subject's Gender is male
+
+\vspace{3cm}
+
+### 4. Here is a plot of the study participants' blood pressure measurements:
+
+```{r, echo = FALSE}
+NHANES_orig <- NHANES
+NHANES <- NHANES %>% filter(BPDiaAve > 0)
+```
+
+```{r, message=FALSE, echo = TRUE, eval = TRUE}
+ggplot(data = NHANES, mapping = aes(x = BPDiaAve)) + geom_density()
+```
+
+#### a. What statistics could you use to summarize the center of this distribution?
+
+\vspace{1cm}
+
+#### b. What statistics could you use to summarize the spread of this distribution?
+
+\vspace{1cm}
+
+
+### 5. Here is a plot of the study participants' heights:
+
+```{r, echo = FALSE}
+NHANES <- NHANES_orig
+```
+
+```{r, message=FALSE, echo = TRUE, eval = TRUE}
+ggplot(data = NHANES, mapping = aes(x = Height)) + geom_density()
+```
+
+#### a. What statistics could you use to summarize the center of this distribution?
+
+\vspace{1cm}
+
+#### b. What statistics could you use to summarize the spread of this distribution?
+
+\vspace{1cm}
+
+\newpage
+
+### 6.  For each of the following pairs of variables, circle the type of plot you would make, and write down the type of geometry you would use to make that plot. (more than one answer may be correct -- if so, choose one)
+
+
+#### 6a. `Diabetes` and `Gender`
+
+Bar Plot
+
+Box Plot
+
+Density Plot with groups shown in different colors
+
+Scatter Plot
+
+
+Geometry type: geom_bar
+
+
+#### 6b. `Age` and `BPSysAve` (`BPSysAve` is a measure of blood pressure)
+
+Bar Plot
+
+Box Plot
+
+Density Plot with groups shown in different colors
+
+Scatter Plot
+
+
+Geometry type: geom_point
+
+
+#### 6c. `Diabetes` and `BPSysAve`
+
+Bar Plot
+
+Box Plot
+
+Density Plot with groups shown in different colors
+
+Scatter Plot
+
+
+Geometry type: geom_boxplot or geom_density, depending on which option you chose above.
+
+
+#### 6d. `Weight` and `Height`
+
+Bar Plot
+
+Box Plot
+
+Density Plot with groups shown in different colors
+
+Scatter Plot
+
+
+Geometry type: geom_point
