@@ -37,13 +37,13 @@ head(NHANES)
 
 ### 1. What is each observational unit in this data set?
 
-\vspace{2cm}
+Each observational unit is an American.
 
 ### 2. For each of the following variables, is that variable categorical or quantitative?  If it is categorical, is it ordinal or nominal?
 
-* `Gender`
-* `Height`
-* `Diabetes`
+* `Gender`: categorical, nominal
+* `Height`: quantitative
+* `Diabetes`: categorical, ordinal (No is better than Yes)
 
 ### 3. The following command counts how many observational units are in each combination of levels of the gender and diabetes variables.
 
@@ -62,15 +62,41 @@ NHANES <- NHANES_orig
 
 #### a. Calculate the joint distribution of Diabetes and Gender
 
-\vspace{3cm}
+The joint distribution of Diabetes and Gender says what proportion of all observational units in the data set are in each combination of levels for those variables.  Divide the counts for the combinations of those two variables by the total number of observations in the data set.  Leave the answer as a proportion (between 0 and 1).
+
+The total is 3088 + 3013 + 269 + 283 = 6653.
+
+female, no diabetes: 3088/6653 = 0.464
+
+female, diabetes: 269/6653 =  0.040
+
+male, no diabetes: 3013/6653 = 0.453
+
+male, diabetes: 283/6653 = 0.043
 
 #### b. Calculate the marginal distribution of Diabetes
 
-\vspace{3cm}
+The marginal distribution of diabetes is the distribution of diabetes across all people in the study.  To find the marginal distribution, we need to first find the total number of people in each level of the diabetes variable:
+
+total for no diabetes: 3088 + 3013 = 6101
+
+total for yes diabetes: 269 + 283 = 552
+
+The marginal distribution of diabetes is then the proportion of all observational units in each level of the diabetes variable:
+
+no diabetes: 6101 / 6653 = 0.917
+
+diabetes: 552 / 6653 = 0.083
 
 #### c. Calculate the conditional distribution of Diabetes given that the subject's Gender is male
 
-\vspace{3cm}
+For this conditional distribution, we are restricting our attention to just the observational units whose gender was recorded as male.  Among those people, what proportion had or did not have diabetes?
+
+There were a total of 3013 + 283 = 3296 people in the data set whose gender was recorded as male.
+
+no diabetes:  3013/3296 = 0.914
+
+diabetes: 283/3296 = 0.086
 
 ### 4. Here is a plot of the study participants' blood pressure measurements:
 
@@ -85,12 +111,11 @@ ggplot(data = NHANES, mapping = aes(x = BPDiaAve)) + geom_density()
 
 #### a. What statistics could you use to summarize the center of this distribution?
 
-\vspace{1cm}
+This distribution is unimodal and symmetric, so we could summarize its center with either the mean or the median.  Most commonly, the mean would be used in this setting.
 
 #### b. What statistics could you use to summarize the spread of this distribution?
 
-\vspace{1cm}
-
+This distribution is unimodal and symmetric, so we could summarize its spread with any of the standard deviation, variance, or interquartile range.  Most commonly, the standard deviation would be used in this setting.
 
 ### 5. Here is a plot of the study participants' heights:
 
@@ -104,11 +129,11 @@ ggplot(data = NHANES, mapping = aes(x = Height)) + geom_density()
 
 #### a. What statistics could you use to summarize the center of this distribution?
 
-\vspace{1cm}
+This distribution is skewed to the left, so we would summarize its center with the median.
 
 #### b. What statistics could you use to summarize the spread of this distribution?
 
-\vspace{1cm}
+This distribution is skewed to the left, so we would summarize its spread with the interquartile range.
 
 \newpage
 
