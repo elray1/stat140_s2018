@@ -11,3 +11,7 @@ Review materials and solutions to quizzes and exams will be posted here.
 |      | [sample](exams/q1/sample_quiz.pdf)                       |               |                                                              |
 |      | [sample solutions](exams/q1/sample_quiz_solutions.pdf)   |               |                                                              |
 +------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
+| Quiz | Material from HW 6.                                      | 2018-02-27    |                                                              |
+|      | [sample](exams/q2/sample_quiz.pdf)                       |               |                                                              |
+|      | [sample solutions](exams/q2/sample_quiz_solutions.pdf)   |               |                                                              |
++------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
