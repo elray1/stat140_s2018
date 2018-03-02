@@ -129,7 +129,7 @@ make_week_box("week3", FALSE, "Week 3: Feb 5 -- 9",
 ```
 
 ```{r, echo = FALSE, results='asis'}
-make_week_box("week4", TRUE, "Week 4: Feb 12 -- 16",
+make_week_box("week4", FALSE, "Week 4: Feb 12 -- 16",
 "
 
 #### Tue, Feb 13
@@ -171,12 +171,14 @@ make_week_box("week5", TRUE, "Week 5: Feb 19 -- 23",
  * **Before class**, please do the following:
     * **Homework 6** is due today; on Gryd
  * **In class**, we will do the following:
-    * **Example** connecting course ideas together and introducing probability
+    * **Example** connecting course ideas together and introducing probability: taste tests.  [pdf](lecture/20180220_tasting/20180220_tasting.pdf)
 
 #### Thu, Feb 22
  * **In class**, we will do the following:
     * **Quiz** on material from HW 5
     * Start on probability
+    * Rules for probability: [pdf](lecture/20180222_probability/20180222_probability.pdf)
+    * First examples with probability: [pdf](lecture/20180222_probability/20180222_probability_examples.pdf)
 
 #### Fri, Feb 23
  * **In class**, we will do the following:
