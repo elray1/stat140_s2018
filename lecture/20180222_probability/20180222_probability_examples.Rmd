@@ -1,0 +1,102 @@
+---
+title: "Stat 140: Probability Examples"
+output:
+  pdf_document:
+    fig_height: 2.8
+    fig_width: 6
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+require(mosaic)
+require(readr)
+require(ggplot2)
+require(dplyr)
+```
+
+```{r include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+# Blood Types
+
+The American Red Cross says that about 45% of the US Population has Type O blood, 40% has Type A blood, 11% has Type B blood, and the rest have Type AB blood.  (A single person will have one blood type -- I can't have both Type A and Type B blood.)
+
+### 1. Someone volunteers to give blood.
+
+#### (a) Are the events that this donor has type A blood and that they have type B blood disjoint?
+
+\vspace{3cm}
+
+#### (b) What is the probability that this donor has Type A or Type B blood?
+
+\vspace{3cm}
+
+#### (c) What is the probability that this donor has Type A blood, Type B blood, or Type O blood?
+
+\vspace{3cm}
+
+#### (d) What is the probability that this donor has Type AB blood? (Use the complement rule).
+
+\vspace{3cm}
+
+### 2. Four potential blood donors come into to the clinic.  They are not related, so we can treat their blood types as being independent.
+
+#### (a) What is the probability that all four are Type O?
+
+\vspace{3cm}
+
+#### (b) What is the probability that they are not all Type O?  (That is, what is the probability that at least one of them has a blood type other than O).  (Use the complement rule).
+
+\vspace{3cm}
+
+#### (c) What is the probability that no one is Type AB?
+
+\vspace{3cm}
+
+\newpage
+
+# Holiday Meals
+
+A survey of American families revealed that 58\% of all families eat turkey at holiday meals, 44\% eat ham, and 16\% have both turkey and ham to eat at holiday meals.
+
+Suppose we pick a family at random.  Define the events
+
+A = the family eats turkey at holiday meals
+
+B = the family eats ham at holiday meals
+
+#### (a) What is P(A)?  What is P(B)?  What is P(A and B)?  
+
+\vspace{3cm}
+
+#### (b) What is the probability that a family selected at random had turkey or ham (or both) at their holiday meal?
+
+\vspace{3cm}
+
+#### (c) What is the probability that a family selected at random had neither turkey nor ham at their holiday meal?
+
+\vspace{3cm}
+
+#### (d) What is the probability that a family selected at random had only ham without having turkey at their holiday meal?  (Draw a diagram)
+
+\vspace{3cm}
+
+#### (e) Are having turkey and having ham disjoint events? Explain.\\
+
+\vspace{3cm}

@@ -1,0 +1,82 @@
+---
+title: "Stat 140: Probability Examples"
+subtitle: "Bayes Rule"
+output:
+  pdf_document:
+    fig_height: 2.8
+    fig_width: 6
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+# AIDS Testing
+
+The ELISA test for AIDS is used in the screening of blood donations.  As with most medical diagnostic tests, the ELISA test is not infallible.  If a person actually carries the AIDS virus, experts estimate that this test gives a positive result 97.7% of the time.  (This number is called the *sensitivity* of the test.)  If a person does not carry the AIDS virus, ELISA gives a negative result 92.6% of the time (the *specificity* of the test).  Recent estimates are that 0.5% of the American public carries the AIDS virus (the *base rate* with the disease).
+
+#### (a) When the American Red Cross receives blood donations, they test them for HIV/AIDs. Suppose a blood donation from a particular person has tested positive.  Given this information, how likely do you think it is that the person actually carries the AIDS virus?  Don't do any calculations for now, just make a guess.
+
+SOLUTION:
+
+\vspace{1cm}
+
+Let's define some relevant events:
+
+A = the event that a (randomly selected) person carries the AIDs virus
+B = the event that a (randomly selected) person tests positive for AIDs
+
+#### (b) From the description above, determine the following (note that there are no calculations to do here - just matching up numbers in the text to probabilities of events):
+
+$P(A) =$
+
+$P(B|A) =$
+
+$P(B^c|A^c) =$
+
+
+#### (c) Calculate the probability that someone who has tested positive for AIDs actually has AIDs.
+
+
+\newpage
+
+# Email Spam
+
+According to Wikipedia, about 80% of all email that is sent is spam (https://en.wikipedia.org/wiki/Email_spam).  According to this article in Wired magazine, as of 2015, Google's spam filter for Gmail correctly identifies 99.9% of all spam emails as spam, and only incorrectly identifies 0.05% of non-spam emails as spam (https://www.wired.com/2015/07/google-says-ai-catches-99-9-percent-gmail-spam/).
+
+Define A to be the event that an email is a spam message, and B to be the event that an email is identified as spam by Gmail's filters.
+
+#### (a) From the description above, determine the following (note that there are no calculations to do here - just matching up numbers in the text to probabilities of events):
+
+$P(A) =$
+
+$P(B | A) =$
+
+$P(B | A^c) =$
+
+#### (b) Find the probability that the next email that makes it to my inbox will be a spam message. That is, find $P(A | B^c)$.
+
+
+
+\newpage
+
+# Drunk Driving
+
+Police often set up roadblocks where drivers are asked a few questions to allow the officer to judge whether or not the person may have been drinking.  If the office does not suspect a problem, drivers are released to goon their way.  Otherwise, drivers are detained for a Breathalyzer test that will determine whether or not they will be arrested.  The police say that based on the brief initial stop, trained officers can make the correct decision 80% of the time.  Suppose the police operate a sobriety checkpoint after 9:00pm on a Saturday night, a time when national traffic safety experts suspect that about 12% of drivers have been drinking.
+
+#### (a) You are stopped at the checkpoint and, of course, have not been drinking.  what's the probability that you are detained for futher testing?
+
+\vspace{3cm}
+
+#### (b) What's the probability that any given driver will be detained?
+
+\vspace{3cm}
+
+#### (c) What's the probability that a driver who is detained has actually been drinking?
+
+\vspace{3cm}
+
+#### (d) What's the probability that a driver who was released had actually been drinking?
+

@@ -1,0 +1,88 @@
+---
+title: 'Stat 140: Rules for Probabilities'
+output:
+  pdf_document:
+    fig_height: 2.9
+    fig_width: 6.5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r, include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+require(mosaic)
+require(tidyr)
+options(digits=3)
+```
+
+```{r, include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# This changes the default colors in lattice plots.
+trellis.par.set(theme=theme.mosaic())  
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+# This loads the mosaic data sets.  (Could be deleted if you are not using them.)
+require(mosaicData)                
+```
+
+# Probability (Chapters 13 and 14)
+
+## General Terminology
+
+1. Trial: a single attempt or realization of a random phenomenon
+
+2. Outcome: an observed value in a trial
+
+3. Event: A set of possible outcomes.  Use letters like $A$, $B$, $C$
+
+4. Sample Space: The set of all possible outcomes.  Use $S$.
+
+5. Complement: The complement of the event $A$ is the set of all possible outcomes *not* in $A$.  Use $A^C$.
+
+6. Disjoint Events: have no outcomes in common
+
+7. Independent Events: knowing one occurred doesn't change what you know about the chances of the other occurring.
+
+## Probability Definitions and Rules
+
+Let $A$ and $B$ be events, and let $S$ be the sample space.
+
+#### Foundations
+
+* $0 \leq P(A) \leq 1$
+
+* $P(S) = 1$
+
+* $P(A^c) = 1 - P(A)$
+
+#### Probability of A *or* B (or both) occurring
+
+* $P(A\text{ or }B) = P(A) + P(B) - P(A\text{ and }B)$
+
+* If $A$ and $B$ are disjoint events, then $P(A\text{ or }B) = P(A) + P(B)$.
+
+#### Conditional Probability; Probability of A *and* B both occurring
+
+* Conditional Probability of $B$ given $A$: $P(B | A) = \frac{P(\text{B and } A)}{P(A)}$
+
+* $P(A \text{ and } B) = P(A) \times P(B | A) = P(B) \times P(A | B)$
+
+* If $A$ and $B$ are **independent** events, then $P(A \text{ and } B) = P(A) \times P(B)$.
+
+* $A$ and $B$ are **independent** if (and only if) $P(B | A) = P(B)$, or turning that around, $P(A | B) = P(A)$.
+
+#### Bayes' Rule
+
+$P(A | B) = \frac{P(B | A)P(A)}{P(B | A)P(A) + P(B | A^c)P(A^c)}$

@@ -1,0 +1,87 @@
+---
+title: "Stat 140: Probability Examples"
+subtitle: "Conditional Probability, P($A$ and $B$)"
+output:
+  pdf_document:
+    fig_height: 2.8
+    fig_width: 6
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+require(mosaic)
+require(readr)
+require(ggplot2)
+require(dplyr)
+```
+
+```{r include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+# Travel (adapted from SDM4 Example 14.36)
+
+18% of US residents have traveled to Canada, 9% have traveled to Mexico, and 4% have traveled to both countries.  (These 4% are included in the 18% who have traveled to Canada and the 9% who have traveled to Mexico).
+
+#### (a) If a randomly selected US resident has traveled to Canada, what is the probability that they have also traveled to Mexico?
+
+\vspace{2cm}
+
+#### (b) Are the events of a randomly selected US resident having traveled to Canada and having traveled to Mexico independent?
+
+\vspace{2cm}
+
+# Benefits (adapted from SDM4 Example 14.34)
+
+56% of all American workers have a workplace retirement plan, 68% have health insurance, and 49% have both benefits.  We select a worker at random.
+
+#### (a) If the selected worker has a retirement plan, what is the probability that they also have health insurance?
+
+\vspace{2cm}
+
+#### (b) Are the events of the selected worker having a retirement plan and the selected worker having health insurance independent?
+
+\vspace{2cm}
+
+# Lost Luggage (adapted from SDM4 Example 14.47)
+
+Leah is flying from Boston to Denver with a connection in Chicago.  The probability that her first flight departs on time is 0.15.  If the flight is on time, the probability that her luggage will make the connecting flight in Chicago is 0.95.  But if the first flight is delayed, the probability that the luggage will make it on to the connecting flight is only 0.65.
+
+#### (a) Are the event of the first flight leaving on time and the event of the flight making it on to the second flight independent?
+
+\vspace{2cm}
+
+#### (b) What is the probability that Leah's flight will depart on time and her luggage will make the connecting flight?
+
+\vspace{2cm}
+
+#### (c) What is the probability that Leah's luggage will arrive in Denver with her?
+
+\vspace{2cm}
+
+# Absenteeism (adapted from SDM4 Example 14.51)
+
+A company's records indicate that on any given day about 1% of their day-shift employees and 2% of the night-shift employees will miss work.  Overall, 60% of their employees work the day shift.
+
+#### (a) What's the probability that a randomly selected employee will be a day-shift worker and will be absent tomorrow?
+
+\vspace{2cm}
+
+#### (b) What's the probability that a randomly selected employee will be at work tomorrow?
+
+\vspace{2cm}
