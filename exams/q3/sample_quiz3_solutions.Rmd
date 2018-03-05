@@ -1,0 +1,44 @@
+---
+title: "Stat 140 - Quiz 3 Sample"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+## What's Your Name? __________________________________
+
+\textbf{This is a sample quiz.  For the real quiz, I will use a different example, but will pick a few questions that are similar to those below and adapt them to the new example with minimal modification.}
+
+An experiment showed that subjects fed the DASH diet were able to lower their blood pressure by an average of 6.7 points compared to a group fed a "control diet".  The experimenters enrolled 50 volunteers with high blood pressure in the study and randomly assigned them to either eat the DASH diet or the control diet.  All meals were prepared by dieticians.  The researchers measured each subject's blood pressure at baseline and again after 3 months.  They then calculated the difference in mean blood pressure change between the two groups:
+
+(mean blood pressure change for DASH diet) - (mean blood pressure change for control diet) = 6.7
+
+#### a. What is the population parameter in this study?  What is the sample statistic?  Describe each in a sentence.
+
+The population parameter is the average difference in blood pressure changes for people on the DASH diet and people on the control diet, among the population of all people with high blood pressure.  The sample statistic is this average difference in blood pressure changes among the 50 subjects in this study.
+
+#### b. Is the number 6.7 a sample statistic or a population parameter?
+
+6.7 is a sample statistic; this number was calculated based on the particular people in this study.  We did not measure blood pressure changes among everyone in the population, so we don't know what the population parameter is.
+
+#### c. Define the *sampling distribution* of a sample statistic in a sentence or two.  (This question will definitely be on the quiz!!)
+
+The sampling distribution is the distributionn of values of the sample statistic that could be obtained from all possible samples of a certain size $n$.
+
+#### d. Why were the subjects randomly assigned to the diets instead of letting people pick what they wanted to eat?
+
+Self-selection could result in groups that were very different from each other at the start of the experiment, making it impossible to attribute differences in the results to the diet.  We want the two groups to be as similar as possible, and randomization can help with that.
+
+#### e. Why were the meals prepared by dieticians?
+
+This ensured that the subjects followed the diets, and that all subjects in each group received comparable treatments.
+
+#### f. Why did the researchers need the control group?  If the DASH diet group's blood pressure was lower at the end of the experiment than at the beginning, wouldn't that prove the effectivenss of that diet?
+
+The researchers can compare the change in blood pressure observed in the DASH group to the control group.  They need to rule out the possibility that extenal variables (for example, the season, news events, or just the fact of being enrolled in a study about diet and blood pressure) affected eveyone's blood pressure.

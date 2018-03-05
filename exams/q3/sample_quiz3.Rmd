@@ -1,0 +1,44 @@
+---
+title: "Stat 140 - Quiz 3 Sample"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+## What's Your Name? __________________________________
+
+\textbf{This is a sample quiz.  For the real quiz, I will use a different example, but will pick a few questions that are similar to those below and adapt them to the new example with minimal modification.}
+
+An experiment showed that subjects fed the DASH diet were able to lower their blood pressure by an average of 6.7 points compared to a group fed a "control diet".  The experimenters enrolled 50 volunteers with high blood pressure in the study and randomly assigned them to either eat the DASH diet or the control diet.  All meals were prepared by dieticians.  The researchers measured each subject's blood pressure at baseline and again after 3 months.  They then calculated the difference in mean blood pressure change between the two groups:
+
+(mean blood pressure change for DASH diet) - (mean blood pressure change for control diet) = 6.7
+
+#### a. What is the population parameter in this study?  What is the sample statistic?  Describe each in a sentence.
+
+\vspace{3cm}
+
+#### b. Is the number 6.7 a sample statistic or a population parameter?
+
+\vspace{3cm}
+
+#### c. Define the *sampling distribution* of a sample statistic in a sentence or two.  (This question will definitely be on the quiz!!)
+
+\vspace{3cm}
+
+#### d. Why were the subjects randomly assigned to the diets instead of letting people pick what they wanted to eat?
+
+\vspace{3cm}
+
+#### e. Why were the meals prepared by dieticians?
+
+\vspace{3cm}
+
+#### f. Why did the researchers need the control group?  If the DASH diet group's blood pressure was lower at the end of the experiment than at the beginning, wouldn't that prove the effectivenss of that diet?
+
+\vspace{3cm}
