@@ -23,3 +23,7 @@ Review materials and solutions to quizzes and exams will be posted here.
 |         | Exam will be posted on Gryd Tuesday, 2018-03-06.         | Due by 5pm    |                                                              |
 |         |                                                          |  2018-03-09   |                                                              |
 +---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
+| Quiz    | Independent and Disjoint events.                         | 2018-03-22    |                                                              |
+|         | [sample](exams/q4/sample_quiz4.pdf)                      |               |                                                              |
+|         | sample solutions will be posted here on 3/20/2018        |               |                                                              |
++---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+

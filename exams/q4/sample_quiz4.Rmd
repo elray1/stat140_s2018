@@ -1,0 +1,37 @@
+---
+title: "Stat 140 - Quiz 4"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+## What's Your Name? __________________________________
+
+## Intuitive Meanings
+
+#### 1) Write a sentence or two describing what it means for two events to be *independent*.  You may not use the word "conditional" and you may not use any formulas.
+
+\vspace{3cm}
+
+#### 2) What a sentence or two describing what it means for two events to be *disjoint*.  You may not use any formulas.
+
+\vspace{3cm}
+
+## Tree Diseases
+
+The probability that a tree has root rot is 0.07, and the probability that it has bark disease is 0.04.  The probability that it has both diseases is 0.001.  
+
+#### 3) Are the events A and B independent?  Justify your answer, and show enough detail that I know you know what you're talking about.
+
+\vspace{3cm}
+
+#### 4) Are the events A and B disjoint?  Justify your answer, and show enough detail that I know you know what you're talking about.
+
+
+

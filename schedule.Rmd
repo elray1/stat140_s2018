@@ -164,7 +164,7 @@ make_week_box("week4", FALSE, "Week 4: Feb 12 -- 16",
 ```
 
 ```{r, echo = FALSE, results='asis'}
-make_week_box("week5", TRUE, "Week 5: Feb 19 -- 23",
+make_week_box("week5", FALSE, "Week 5: Feb 19 -- 23",
 "
 
 #### Tue, Feb 20
@@ -188,7 +188,7 @@ make_week_box("week5", TRUE, "Week 5: Feb 19 -- 23",
 ```
 
 ```{r, echo = FALSE, results='asis'}
-make_week_box("week6", TRUE, "Week 6: Feb 26 -- Mar 2",
+make_week_box("week6", FALSE, "Week 6: Feb 26 -- Mar 2",
 "
 
 #### Tue, Feb 27
@@ -213,15 +213,26 @@ make_week_box("week6", TRUE, "Week 6: Feb 26 -- Mar 2",
 ```{r, echo = FALSE, results='asis'}
 make_week_box("week7", TRUE, "Week 7: Mar 5 -- 9",
 "
- * **Midterm 1** some time this week; covers material from Chapters 1 -- 4, 6.  Take home.
+ * **Midterm 1** due Friday, Mar 9 at 5pm; covers material from Chapters 1 -- 4, 6, 11, and 12 (up through HW 7).  Take home.
 
 #### Tue, Mar 6
- * **Quiz** on material from HW 7
- * Take-home midterm distributed?
+ * **Before class**, please do the following:
+    * Read Sections 15.1 and 15.2, 16.1, 16.2, and 16.3 in SDM4; In SDM3, the first few sections of Chapter 16 (up to but not including \"More About Means and Variances\"), and the first few sections of Chapter 17 (up to but not including \"The Normal Model to the Rescue!\")
+ * **In class**, we will do the following:
+    * **Quiz** on material from HW 7
+    * Lecture covering the highlights from Chapters 15 and 16: [pdf](lecture/20180306_binomial/20180306_binomial.pdf)
+    * Lab 9 about the Binomial distribution on Gryd
 
 #### Thu, Mar 8
+ * **Before class**, please do the following:
+    * If you want, you can skim Chapters 18 and 19 of SDM4; Chapters 19 and 20 of SDM3.  We will use a different approach to this material than the textbook, and will not go into as much depth as the text, but this reading may still be helpful to get some of the ideas.
+ * **In class**, we will do the following:
+    * Short overview of hypothesis tests and confidence intervals for proportions
+    * Lab 10 on Gryd
 
 #### Fri, Mar 9
+ * **In class**, we will do the following:
+    * Finish lab 10 on Gryd.
 "
   )
 ```
@@ -239,8 +250,14 @@ make_week_box("week9", TRUE, "Week 9: Mar 19 -- 23",
 "
 
 #### Tue, Mar 20
+ * **In class**, we will do the following:
+    * Review/wrap-up of M&M's lab: [pdf](lecture/20180320_p_inference/20180320_p_inference.pdf)
+    * Lab 11 on Gryd: interpretation of confidence intervals
 
 #### Thu, Mar 22
+ * **In class**, we will do the following:
+    * **Quiz** on independent and disjoint events.  Be able to define independent and disjoint events, and to check whether two events are independent or disjoint.  Sample quiz and solutions will be posted on the Exams page on the course website.
+    * Depending on results of in-class poll, we will either continue with inference for a population proportion, or start thinking about normal distributions and the sampling distribution of a sample mean.
 
 #### Fri, Mar 23
 "

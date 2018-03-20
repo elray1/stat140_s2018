@@ -1,0 +1,234 @@
+---
+title: "Lab 10 (M&M's) Wrap-Up"
+subtitle: "More on Hypothesis Tests and Confidence Intervals for Population Proportions"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(readr)
+```
+
+**Note:** There are also solutions to Lab 10 on Gryd.
+
+# What Proportion of M&M's are blue?
+
+Mars Company (the makers of M&M's) last published the distribution of colors for M&M's in 2008, and at that time the proportion of M&M's that were blue was 0.16. Has the proportion of M&M's that are blue changed since then? Let's investigate.
+
+# 1. What is the population parameter?
+
+\includegraphics{pop-sample.png}
+
+# 2. Write down suitable null and alternative hypotheses for a hypothesis test of whether the proportion of M&M's that are blue has changed since 2008.
+
+Null hypothesis: p = 0.16
+
+Alternative hypothesis: p $\neq$ 0.16
+
+\vspace{1cm}
+
+# 3. Take a sample of roughly 10 M&M's, and a second sample of roughly 100 M&M's (the exact sample sizes are not important). In each sample, count how many M&M's were blue.
+
+People who submitted the lab had different numbers of blue M&M's in their samples:
+
+```{r}
+results_small_sample <- data.frame(
+  x = c(6, 2, 5, 1, 6, 4, 3, 1, 1, 4, 0, 2, 3, 0, 2, 2, 0),
+  n = c(10, 10, 21, 10, 10, 10, 10, 10, 10, 10, 10, 11, 10, 10, 10, 10, 10)
+)
+
+results_small_sample
+
+results_large_sample <- data.frame(
+  x = c(45, 28, 47, 33, 45, 30, 34, 36, 21, 22, 23, 51, 26, 28, 18, 58, 20),
+  n = c(151, 100, 136, 115, 115, 100, 100, 121, 100, 108, 100, 276, 100, 100, 100, 100, 100)
+)
+
+results_large_sample
+```
+
+# 4. Define $X$ to be a random variable that represents the count of how many M&M's in your larger sample were blue. What model could you use for the sampling distribution of $X$?
+
+$X \sim \text{Binomial}(100, p)$
+
+This is shorthand for "We model $X$ as following a binomial distribution with sample size $n = 100$ and unknown population proportion $p$."
+
+# 5. Are the conditions met for using the sample to learn about the population, and for using the statistical model specified in part 4?
+
+There are three things to think about:
+
+1. Is the sample **representative** of the population? (always required)
+    * Were we careful in **randomly selecting** the people to include in the sample?
+    * Are there any forms of **bias** in the sampling?  In this case, 23 people did not respond (there is some non-response).  Does this matter?
+
+**Answer:** We took a random sample of M&M's for our sample.  It's hard to say for sure if this sample was representative of the population.  This was a convenience sample (we drew the M&M's from a single bag).  Maybe this bag was produced in a factory that makes more or less blue M&M's than the population as a whole.  For the purpose of the lab, let's go ahead with the assumption that this was a representative sample.
+
+2.  Are the the people in the sample **independent** from each other? (required for all methods we will use in this class)
+    * Does knowing one person's response change the information we have about another person's response?
+    * Closely related to the question of randomization above.
+
+**Answer:** Knowing the color of one M&M in my sample doesn't give me any information about the colors of other M&M's in the sample.  The assumption of independence seems reasonable.
+
+3. Is the variable we have recorded a **count of the number of people or items in our sample with a certain characteristic**?  (required to use the Binomial model)
+
+**Answer:** We counted the number of M&M's that were blue in our sample.  The Binomial model is appropriate.
+
+All of these conditions are satisfied, with the possible exception that we are using a convenience sample.  Without any specific information indicating that using M&M's from a single bag is a problem, let's proceed.
+
+# 6. Computations in R
+
+Since everyone had a different number of blue M&M's in their sample, we all had different results.  Here's one example, supposing you had 2 blue M&M's in a sample of size 10 and 33 blue M&M's in a sample of size 100:
+
+**For the sample of size 10:**
+```{r, echo = TRUE, message=FALSE}
+binom.test(x = 2, n = 10, p = 0.16)
+```
+
+\newpage
+
+**For the sample of size 100:**
+```{r, echo = TRUE, message=FALSE}
+binom.test(x = 33, n = 100, p = 0.16)
+```
+
+In the screenshot below, I have annotated where the different pieces of information can be found in this R output:
+
+\includegraphics{binom_test_output.png}
+
+## 7. Based on the R output from part 6, what is your point estimate of the proportion of M&M's in the population that are blue? You can state this for just the larger sample.
+
+If we took a sample of size $n = 100$ and observed $x = 33$ blue M&M's in the sample, the sample proportion is
+
+$\hat{p} = \frac{33}{100} = 0.33$.
+
+This is our point estimate of the population proportion.
+
+\vspace{1cm}
+
+## 8. Based on the R output from part 6, what is a 95% confidence interval for the proportion of M&M's in the population that are blue? Do this for both samples.
+
+Based on the sample of size 10, I am 95% confident that the proporiton of M&M's in the population that are blue is between 0.025 and 0.556.
+
+Based on the sample of size 100, I am 95% confident that the proporiton of M&M's in the population that are blue is between 0.239 and 0.431.
+
+\vspace{1cm}
+
+## 9. What is the interpretation of the confidence interval you found in part 8 based on the larger sample?
+
+If we were to take a large number of different random samples of size 100 from the population, and compute a different 95% confidence interval for the population proportion $p$ based on each of those samples, about 95% of those different confidence intervals would contain the true proportion of M&M's that are blue in the population.
+
+\vspace{0.1cm}
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+ci_results <- bind_rows(
+  data.frame(
+    student_num = seq_len(nrow(results_small_sample)),
+    x = results_small_sample$x,
+    n = results_small_sample$n,
+    p_hat = results_small_sample$x / results_small_sample$n,
+    ci_lb = sapply(seq_len(nrow(results_small_sample)), function(i) {
+      binom.test(
+        x = results_small_sample$x[i],
+        n = results_small_sample$n[i])$conf.int[1]
+    }),
+    ci_ub = sapply(seq_len(nrow(results_small_sample)), function(i) {
+      binom.test(
+        x = results_small_sample$x[i],
+        n = results_small_sample$n[i])$conf.int[2]
+    }),
+    sample_size = "small"
+  ),
+  data.frame(
+    student_num = seq_len(nrow(results_large_sample)),
+    x = results_large_sample$x,
+    n = results_large_sample$n,
+    p_hat = results_small_sample$x / results_small_sample$n,
+    ci_lb = sapply(seq_len(nrow(results_large_sample)), function(i) {
+      binom.test(
+        x = results_large_sample$x[i],
+        n = results_large_sample$n[i])$conf.int[1]
+    }),
+    ci_ub = sapply(seq_len(nrow(results_large_sample)), function(i) {
+      binom.test(
+        x = results_large_sample$x[i],
+        n = results_large_sample$n[i])$conf.int[2]
+    }),
+    sample_size = "large"
+  )
+)
+```
+
+I calculated the confidence intervals based on everyone's different samples (code not shown).  Here are the first few rows of the results:
+
+```{r}
+head(ci_results)
+```
+
+Here is a plot showing the confidence intervals from the 17 different people who submitted the lab.
+
+```{r, fig.height = 4}
+ggplot(data = ci_results,
+  mapping = aes(xmin = ci_lb, xmax = ci_ub, x = p_hat, y = student_num, color = sample_size)) +
+  geom_errorbarh() +
+  xlim(c(0, 1)) +
+  xlab("p") +
+  ylab("Student Number")
+```
+
+## 10. The width of a confidence interval is the difference between the upper limit and the lower limit. The width is a measure of our level of uncertainty about the value of the population parameter (a wider interval indicates more uncertainty about the population parameter value). Find the width of each confidence interval you found in part 8. Is the confidence interval based on a large sample wider or narrower than the confidence interval based on a small sample? Does this make sense?
+
+In the plot above, the confidence intervals based on small samples were wider than the confidence intervals based on large samples.
+
+A larger sample gives us more information about the population.
+
+
+## 11. Based on the R output from part 6, what is the p-value for the hypothesis test you set up in part 2? What is the interpretation of that p-value, and what is your conclusion for the test?
+
+In my output from number 6 above, the p-value for the test is 2.674e-05 = 0.00002674.
+
+The p-value is the probability of observing a test statistic at least as extreme as what we observed in this sample, if the null hypothesis was true.
+
+To draw a conclusion for the test, we compare the p-value to significance level cut-offs. For example, since the p-value is less than 0.001, the data provide very strong evidence that the population proportion of M&M's that are blue is not equal to 0.16.
+
+## Just as we all got different confidence intervals based on our different samples, we also all got different p-values!
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+htest_results <- data.frame(
+  student_num = seq_len(nrow(results_large_sample)),
+  x = results_large_sample$x,
+  n = results_large_sample$n,
+  p_hat = results_large_sample$x / results_large_sample$n,
+  p_value = sapply(seq_len(nrow(results_large_sample)), function(i) {
+    binom.test(
+      x = results_large_sample$x[i],
+      n = results_large_sample$n[i])$p.value
+  }),
+  sample_size = "large"
+)
+```
+
+Here are the p-values based on the different samples we got:
+
+```{r}
+htest_results
+```
+
+Here is a plot of the p-values for the test we set up in part 2, of the null hypothesis that $p = 0.16$.
+
+```{r}
+ggplot(data = htest_results, mapping = aes(x = p_value, y = student_num)) + 
+  geom_path() +
+  geom_point()
+```
+
+## 12. Suppose we used a significance level of 0.05 to make our decision in the hypothesis test.  Who would reject the null hypothesis that $p = 0.16$?  Who would fail to reject the null hypothesis?
+
+\vspace{2cm}
+
+## 13. Is there any chance that everyone in the class could have made the "correct" decision in the hypothesis test based on their samples?
+
+\vspace{2cm}
+
