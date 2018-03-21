@@ -25,7 +25,9 @@ library(ggplot2)
 
 ## Tree Diseases
 
-The probability that a tree has root rot is 0.07, and the probability that it has bark disease is 0.04.  The probability that it has both diseases is 0.001.  
+The probability that a tree has root rot is 0.07, and the probability that it has bark disease is 0.04.  The probability that it has both diseases is 0.001.
+
+Let A be the event that a randomly selected tree has root rot and B be the event that it has bark disease.
 
 #### 3) Are the events A and B independent?  Justify your answer, and show enough detail that I know you know what you're talking about.
 

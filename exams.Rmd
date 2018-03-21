@@ -16,7 +16,7 @@ Review materials and solutions to quizzes and exams will be posted here.
 |         | [sample solutions](exams/q2/sample_quiz_solutions.pdf)   |               |                                                              |
 +---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
 | Quiz    | Material from HW 7.                                      | 2018-03-06    |                                                              |
-|         | [sample](exams/q3/sample_quiz3.pdf)                      |               |                                                              |
+|         | [sample](exams/q3/sample_quiz3.pdf),                     |               |                                                              |
 |         | [sample solutions](exams/q3/sample_quiz3_solutions.pdf)  |               |                                                              |
 +---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
 | Midterm | Material from HW 1 - 7. Sample posted on Gryd.           | **Take Home** |                                                              |
@@ -24,6 +24,6 @@ Review materials and solutions to quizzes and exams will be posted here.
 |         |                                                          |  2018-03-09   |                                                              |
 +---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
 | Quiz    | Independent and Disjoint events.                         | 2018-03-22    |                                                              |
-|         | [sample](exams/q4/sample_quiz4.pdf)                      |               |                                                              |
-|         | sample solutions will be posted here on 3/20/2018        |               |                                                              |
+|         | [sample](exams/q4/sample_quiz4.pdf),                     |               |                                                              |
+|         | [sample solutions](exams/q4/sample_quiz4_solutions.pdf)  |               |                                                              |
 +---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+

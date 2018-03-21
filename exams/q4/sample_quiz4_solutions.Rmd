@@ -1,0 +1,65 @@
+---
+title: "Stat 140 - Quiz 4"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+## What's Your Name? __________________________________
+
+## Intuitive Meanings
+
+#### 1) Write a sentence or two describing what it means for two events to be *independent*.  You may not use the word "conditional" and you may not use any formulas.
+
+Two events are independent if knowing that one of them has occurred doesn't give you any information about whether or not the other has occurred.  The probability that one occurs is the same whether or not I know that the other has occurred.
+
+#### 2) What a sentence or two describing what it means for two events to be *disjoint*.  You may not use any formulas.
+
+Two events are disjoint if it's impossible for them both to occur at the same time.
+
+## Tree Diseases
+
+The probability that a tree has root rot is 0.07, and the probability that it has bark disease is 0.04.  The probability that it has both diseases is 0.001.
+
+Let A be the event that a randomly selected tree has root rot and B be the event that it has bark disease.
+
+#### 3) Are the events A and B independent?  Justify your answer, and show enough detail that I know you know what you're talking about.
+
+To check whether A and B are disjoint, you can check any of the following conditions (just pick one):
+
+**Option 1** - check: is $P(A\text{ and }B) = P(A) \times P(B)$?
+
+$P(A\text{ and }B) = 0.001$
+
+$P(A) \times P(B) = 0.07 \times 0.04 = 0.0028$
+
+These are not equal to each other, so the events A and B are not independent.
+
+
+**Option 2** - check: is $P(A|B) = P(A)$?
+
+$P(A) = 0.07$
+
+$P(A|B) = \frac{P(A \text{ and } B)}{P(B)} = \frac{0.001}{0.04} = 0.025$
+
+These are not equal to each other, so the events A and B are not independent.
+
+
+**Option 3** - check: is $P(B|A) = P(B)$?
+
+$P(B) = 0.04$
+
+$P(B|A) = \frac{P(A \text{ and } B)}{P(A)} = \frac{0.001}{0.07} = 0.0143$
+
+These are not equal to each other, so the events A and B are not independent.
+
+#### 4) Are the events A and B disjoint?  Justify your answer, and show enough detail that I know you know what you're talking about.
+
+The events A and B are disjoint if P(A and B) = 0.  Since the probability that the tree has both diseases is 0.001, which is not equal to 0, these events are not disjoint.
+
