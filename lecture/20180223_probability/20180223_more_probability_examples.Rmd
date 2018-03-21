@@ -1,0 +1,91 @@
+---
+title: "Stat 140: More Probability Examples"
+output:
+  pdf_document:
+    fig_height: 2.8
+    fig_width: 6
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+require(mosaic)
+require(readr)
+require(ggplot2)
+require(dplyr)
+```
+
+```{r include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+# Diabetes and hypertension
+
+Diabetes and hypertension are two of the most common diseases in Western, industrialized nations. In the United States, approximately 9\% of the population have diabetes, while about 30\% of adults have high blood pressure. The two diseases frequently occur together: an estimated 6\% of the population have both diabetes and hypertension.
+
+
+### 1. Are having diabetes and having hypertension disjoint?
+
+\vspace{1.5cm}
+
+### 2. Draw a Venn diagram summarizing the variables and their associated probabilities.
+
+\vspace{4cm}
+
+### 3. Let $A$ represent the event of having diabetes, and $B$ the event of having hypertension. Calculate $P(A \text{ or } B)$.
+
+\vspace{4cm}
+
+### 4. What percent of Americans have neither hypertension nor diabetes?
+
+\newpage
+
+# Drug Testing
+
+Mandatory drug testing in the workplace is common practice for certain professions, such as air traffic controllers and transportation workers.  A false positive in a drug screening test occurs when the test incorrectly indicates that a screened person is an illegal drug user.  Suppose a mandatory drug test has a false positive rate of 1.2\% (i.e., has probability  0.012 of indicating that an employee is using illegal drugs when that is not the case).
+
+### 1. A company gives all 150 of its employees drug tests, and in reality all 150 employees are not drug users.  Assume that the drug tests are \textbf{independent}: the outcome of one drug test has no effect on the others.  Define the events:
+
+\begin{align*}
+A_1 &= \text{ the 1st employee tests positive} \\
+A_2 &= \text{ the 2nd employee tests positive} \\
+ &\vdots \\
+A_{150} &= \text{ the 150th employee tests positive} \\
+\end{align*}
+
+
+#### a. Find the probability that a particular employee tests negative
+
+\vspace{1.5cm}
+
+#### b. Find the probability that all 150 employees test negative
+
+\vspace{3cm}
+
+#### c. Find the probability that at least one employee (falsely) tests positive
+
+\vspace{3cm}
+
+\newpage
+
+### 2.
+
+Because of the high likelihood of at least one false positive in company wide drug screening programs, an individual with a positive test is almost always re-tested with a different screening test: one that is more expensive than the first, but has a lower false positive probability. Suppose the second test has a false positive rate of 0.8\%.
+
+What is the probability that an employee who is not using illegal drugs will test positive on both tests?  Assume the two tests are independent of each other.
+
+
