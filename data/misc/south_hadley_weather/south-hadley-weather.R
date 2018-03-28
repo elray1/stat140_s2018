@@ -47,6 +47,9 @@ get_weather <- function(year){
 
 daily_weather <- purrr::map_dfr(1941:2018, get_weather)
 daily_weather$events <- gsub("\n\t,\n", ";", daily_weather$events)
+for(col_ind in 1:20) {
+  daily_weather[, col_ind] <- as.numeric(daily_weather[, col_ind])
+}
 write_csv(daily_weather, "daily_weather.csv")
 
 yearly_weather <- daily_weather %>%
