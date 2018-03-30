@@ -211,7 +211,7 @@ make_week_box("week6", FALSE, "Week 6: Feb 26 -- Mar 2",
 ```
 
 ```{r, echo = FALSE, results='asis'}
-make_week_box("week7", TRUE, "Week 7: Mar 5 -- 9",
+make_week_box("week7", FALSE, "Week 7: Mar 5 -- 9",
 "
  * **Midterm 1** due Friday, Mar 9 at 5pm; covers material from Chapters 1 -- 4, 6, 11, and 12 (up through HW 7).  Take home.
 
@@ -238,7 +238,7 @@ make_week_box("week7", TRUE, "Week 7: Mar 5 -- 9",
 ```
 
 ```{r, echo = FALSE, results='asis'}
-make_week_box("week8", TRUE, "Week 8: Mar 12 -- 16",
+make_week_box("week8", FALSE, "Week 8: Mar 12 -- 16",
 "
 #### Spring Break: safe travels!
 "
@@ -246,7 +246,7 @@ make_week_box("week8", TRUE, "Week 8: Mar 12 -- 16",
 ```
 
 ```{r, echo = FALSE, results='asis'}
-make_week_box("week9", TRUE, "Week 9: Mar 19 -- 23",
+make_week_box("week9", FALSE, "Week 9: Mar 19 -- 23",
 "
 
 #### Tue, Mar 20
@@ -257,9 +257,14 @@ make_week_box("week9", TRUE, "Week 9: Mar 19 -- 23",
 #### Thu, Mar 22
  * **In class**, we will do the following:
     * **Quiz** on independent and disjoint events.  Be able to define independent and disjoint events, and to check whether two events are independent or disjoint.  Sample quiz and solutions will be posted on the Exams page on the course website.
-    * Depending on results of in-class poll, we will either continue with inference for a population proportion, or start thinking about normal distributions and the sampling distribution of a sample mean.
+    * Wrap up inference for a population proportion: [pdf](lecture/20180322_p_inference_examples/20180322_p_inference_examples.pdf)
+    * Briefly, discuss the ASA statement on p-values: [pdf](lecture/20180322_p_inference_examples/The_ASA_Statement_on_p_values_-_Context_Process_and_Purpose_highlighted.pdf)
 
 #### Fri, Mar 23
+ * **Before class**, please do the following:
+    * **Please read:** Sections 5.3, 17.3, 17.4, and 17.5 of SDM4; or in SDM3, the section of Chapter 6 called 'When is a z-score BIG', and the sections of Chapter 18 from 'What About Quantitative Data' on.
+ * **In class**, we will do the following:
+    * Start to think about the sampling distribution of the sample mean.
 "
   )
 ```
@@ -269,10 +274,18 @@ make_week_box("week10", TRUE, "Week 10: Mar 26 -- 30",
 "
 
 #### Tue, Mar 27
+ * **In class**, we will do the following:
+    * Introduction/example of inference for a population mean [pdf](lecture/20180327_mean_sampling_distribution/20180327_mean_sampling_distribution.pdf)
+    * Start Lab 13 on Gryd
 
 #### Thu, Mar 29
+ * **In class**, we will do the following:
+    * Discuss the sampling distribution of the sample mean and the central limit theorem [pdf](lecture/20180329_clt/20180329_clt.pdf)
+    * Continue Lab 13 on Gryd, start Lab 14 on Gryd
 
 #### Fri, Mar 30
+ * **In class**, we will do the following:
+    * Continue Labs 13 and 14 on Gryd
 "
   )
 ```
@@ -282,10 +295,22 @@ make_week_box("week11", TRUE, "Week 11: Apr 2 -- 6",
 "
 
 #### Tue, Apr 3
+ * **Before class**, please do the following:
+    * **Homework 10** is due today!
+    * If you haven't already, **please read:** Sections 5.3, 17.3, 17.4, and 17.5 of SDM4; or in SDM3, the section of Chapter 6 called 'When is a z-score BIG', and the sections of Chapter 18 from 'What About Quantitative Data' on.
+    * Additionally, **please read** Chapter 20 of SDM4, Chapter 23 of SDM3
+ * **In class**, we will do the following:
+    * Wrap Up/Summarize the sampling distribution of the sample mean; lab 14
+    * Start connecting this to mechanics of inference for a population mean - what's going on behind the scenes?
 
 #### Thu, Apr 5
+ * **In class**, we will do the following:
+    * **Quiz** on Homework 9
+    * Continue looking at the mechanics of inference for a population mean - what's going on behind the scenes?
 
 #### Fri, Apr 6
+ * **In class**, we will do the following:
+    * Wrap Up looking at the mechanics of inference for a population mean - what's going on behind the scenes?
 "
   )
 ```
@@ -293,6 +318,7 @@ make_week_box("week11", TRUE, "Week 11: Apr 2 -- 6",
 ```{r, echo = FALSE, results='asis'}
 make_week_box("week12", TRUE, "Week 12: Apr 9 -- 13",
 "
+**Midterm 2**: Material from homeworks 8, 9, and 10 - take home.
 
 #### Tue, Apr 10
 

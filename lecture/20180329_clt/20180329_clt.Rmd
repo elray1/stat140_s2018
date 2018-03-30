@@ -1,0 +1,265 @@
+---
+title: "The Normal Distribution and the Sampling Distribution of the Sample Mean"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(ggplot2)
+library(grid)
+require(dplyr)
+require(tidyr)
+require(readr)
+require(mosaic)
+```
+
+# The Normal Model (Bell Curve) - See Chapter 5
+
+In each of the plots below,
+
+ * the black curve is a density plot of the observed sample data
+ * the red curve is a density curve for a normal model with the same mean and standard deviation as the sample data
+
+```{r, echo = FALSE, message = FALSE, fig.height=3.5}
+car_speeds <- read_csv("http://www.evanlray.com/stat140_s2018/data/sdm3/Chapter_06/Ch06_Car_speeds.csv")
+colnames(car_speeds) <- "speed"
+normal_mean <- mean(car_speeds$speed)
+normal_sd <- sd(car_speeds$speed)
+
+p1 <- ggplot() +
+  geom_density(mapping = aes(x = speed), data=car_speeds) +
+  stat_function(mapping = aes(x = speed),
+    fun = dnorm,
+    colour = "red",
+    args = list(mean = normal_mean, sd = normal_sd),
+    data = car_speeds) +
+  scale_x_continuous(
+    breaks = c(16, 31, normal_mean + seq(from = -1, to = 1)*normal_sd),
+    labels = c(16, 31, expression(paste(mu, " - ", sigma)), expression(paste(mu)), expression(paste(mu, " + ", sigma)))) +
+  ggtitle("Car speeds in a 20 MPH zone")
+
+
+
+lake_huron <- read_csv("http://www.evanlray.com/stat140_s2018/data/base_r/lake_huron.csv")
+normal_mean <- mean(lake_huron$water_level)
+normal_sd <- sd(lake_huron$water_level)
+
+p2 <- ggplot() +
+  geom_density(mapping = aes(x = water_level), data=lake_huron) +
+  stat_function(mapping = aes(x = water_level),
+    fun = dnorm,
+    colour = "red",
+    args = list(mean = normal_mean, sd = normal_sd),
+    data = lake_huron) +
+  scale_x_continuous(
+    breaks = c(576, 582, normal_mean + seq(from = -1, to = 1)*normal_sd),
+    labels = c(576, 582, expression(paste(mu, " - ", sigma)), expression(paste(mu)), expression(paste(mu, " + ", sigma)))) +
+  ggtitle("Annual Lake Huron water levels,\n1875-1972")
+
+
+
+
+pizza <- read_csv("http://www.evanlray.com/stat140_s2018/data/sdm3/Chapter_04/Ch04_Pizza_Prices.csv")
+normal_mean <- mean(pizza$Price)
+normal_sd <- sd(pizza$Price)
+
+p3 <- ggplot() +
+  geom_density(mapping = aes(x = Price), data=pizza) +
+  stat_function(mapping = aes(x = Price),
+    fun = dnorm,
+    colour = "red",
+    args = list(mean = normal_mean, sd = normal_sd),
+    data = pizza) +
+  scale_x_continuous(
+    breaks = c(2.3, 2.9, normal_mean + seq(from = -1, to = 1)*normal_sd),
+    labels = c(2.3, 2.9, expression(paste(mu, " - ", sigma)), expression(paste(mu)), expression(paste(mu, " + ", sigma)))) +
+  ggtitle("Prices of plain pizza slices\nin Dallas, TX")
+
+
+
+cmb <- read_csv("http://www.evanlray.com/stat343_s2018/data/bayesian_core/CMBdata.txt",
+    col_names = FALSE)
+names(cmb) <- "temp_difference"
+normal_mean <- mean(cmb$temp_difference)
+normal_sd <- sd(cmb$temp_difference)
+
+p4 <- ggplot(data = cmb, mapping = aes(x = temp_difference)) +
+  geom_density() +
+  stat_function(
+    fun = dnorm,
+    colour = "red",
+    args = list(mean = normal_mean, sd = normal_sd)) +
+  scale_x_continuous(
+    breaks = c(0, 0.3, normal_mean + seq(from = -1, to = 1)*normal_sd),
+    labels = c(0, 0.3, expression(paste(mu, " - ", sigma)), expression(paste(mu)), expression(paste(mu, " + ", sigma)))) +
+  ggtitle("Cosmological microwave\nbackground temperature")
+
+
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(nrow = 2, ncol = 2)))
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(p3, vp = viewport(layout.pos.row = 2, layout.pos.col = 1))
+print(p4, vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
+```
+
+ * Let the random variable $X$ denote the numeric value of one of these variables for a randomly sampled item from the population
+     * Example: $X$ is the speed of a randomly selected car driving in a 20 MPH speed zone.
+     * Example: $X$ is the price of a randomly selected slice of pizza in Dallas, TX.
+ * We can **model** the value of $X$ as being a draw from a normal distribution
+ * $X \sim \text{Normal}(\mu, \sigma)$
+ * Read: "X is modeled as following a normal distribution with mean $\mu$ and standard deviation $\sigma$"
+ * $\mu$ and $\sigma$ are **parameters** that control the center and spread of the distribution
+
+```{r, echo = FALSE, fig.height=1.5}
+x_grid <- seq(from = -5, to = 5, by = 0.01)
+n_grid <- length(x_grid)
+
+mu1 <- 0
+sigma1 <- 1
+
+mu2 <- 1
+sigma2 <- 0.2
+
+mu3 <- -2
+sigma3 <- 2
+
+plot_df <- data.frame(
+  x = rep(x_grid, 3),
+  density = c(dnorm(x_grid, mean = mu1, sd = sigma1), dnorm(x_grid, mean = mu2, sd = sigma2), dnorm(x_grid, mean = mu3, sd = sigma3)),
+  parameters = c(rep("mu = 0, sigma = 1", n_grid), rep("mu = 1, sigma = 0.2", n_grid), rep("mu = -2, sigma = 2", n_grid))
+)
+
+ggplot() +
+  geom_line(aes(x = x, y = density, color = parameters), data = plot_df)
+```
+
+\newpage
+
+# The Sampling Distribution of the Sample Mean - See Chapter 17
+
+**Our Goal:** Use the sample mean to estimate the population mean.  **What can we say about how close the sample mean should be to the population mean?**
+
+**Sampling Distribution of the Sample Mean:** The distribution of values of the sample mean that we would obtain from all possible samples of a certain size $n$.
+
+**Last class:** we took many different samples from a population of candy bars, and calculated the sample mean for each of those different samples:
+
+```{r, echo = FALSE, cache = TRUE}
+population <- data.frame(
+    candy = c(
+        rep("Crunch", 1),
+        rep("Hershey's milk", 6),
+        rep("Hershey's almond", 12),
+        rep("Reese's Peanut Butter", 8),
+        rep("Butterfinger", 14),
+        rep("KitKat", 11),
+        rep("Andes", 13),
+        rep("Starburst", 10),
+        rep("Kiss", 24),
+        rep("Junior Mints", 1)
+    ),
+    weight = c(
+        rep(137, 1),
+        rep(45, 6),
+        rep(43, 12),
+        rep(17, 8),
+        rep(22, 14),
+        rep(15, 11),
+        rep(5, 13),
+        rep(5, 10),
+        rep(5, 24),
+        rep(115, 1)
+    )
+)
+
+p1 <- ggplot(data = population, mapping = aes(x = weight)) +
+  geom_histogram(bins = 30) +
+  geom_vline(mapping = aes(xintercept = mean(population$weight)), color = "red") +
+  xlim(c(0, 150)) +
+  ggtitle("Weights in Population\nof 100 Candies")
+
+
+sample_means <- do(1000) * {
+    candy_sample <- population %>% sample_n(size = 5, replace = FALSE)
+    candy_sample %>%
+        summarize(sample_mean_weight = mean(weight))
+}
+
+p2 <- ggplot(data = sample_means, mapping = aes(x = sample_mean_weight)) +
+  geom_histogram() +
+  geom_vline(mapping = aes(xintercept = mean(population$weight)), color = "red") +
+  xlim(c(0, 150)) +
+  ggtitle("Simulated Sample Means,\nSample Size = 5")
+
+
+sample_means <- do(1000) * {
+    candy_sample <- population %>% sample_n(size = 10, replace = FALSE)
+    candy_sample %>%
+        summarize(sample_mean_weight = mean(weight))
+}
+
+
+p3 <- ggplot(data = sample_means, mapping = aes(x = sample_mean_weight)) +
+  geom_histogram() +
+  geom_vline(mapping = aes(xintercept = mean(population$weight)), color = "red") +
+  xlim(c(0, 150)) +
+  ggtitle("Simulated Sample Means,\nSample Size = 10")
+
+
+
+sample_means <- do(1000) * {
+    candy_sample <- population %>% sample_n(size = 20, replace = FALSE)
+    candy_sample %>%
+        summarize(sample_mean_weight = mean(weight))
+}
+
+p4 <- ggplot(data = sample_means, mapping = aes(x = sample_mean_weight)) +
+  geom_histogram() +
+  geom_vline(mapping = aes(xintercept = mean(population$weight)), color = "red") +
+  xlim(c(0, 150)) +
+  ggtitle("Simulated Sample Means,\nSample Size = 20")
+```
+```{r, echo = FALSE, message=FALSE, fig.height = 4}
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(nrow = 2, ncol = 2)))
+print(p1, vp = viewport(layout.pos.row = 1, layout.pos.col = 1))
+print(p2, vp = viewport(layout.pos.row = 1, layout.pos.col = 2))
+print(p3, vp = viewport(layout.pos.row = 2, layout.pos.col = 1))
+print(p4, vp = viewport(layout.pos.row = 2, layout.pos.col = 2))
+```
+
+**Key Observations About the Sampling Distributions:**
+
+ * **Center:** The average of the sample means across different samples is close to the population mean
+ * **Spread:** As the sample size increases, there is less spread in the sample means from different samples
+ * **Shape:** As the sample size increases, the distribution of sample means from different samples becomes more symmetric, less skewed.
+
+### Central Limit Theorem
+
+* $Y_1, Y_2, \ldots, Y_n$ are **independent** observations of a **quantitative variable**
+* Population has mean $\mu$ and standard deviation $\sigma$
+* Compute the sample mean: $\bar{Y} = \frac{1}{n}\sum_{i=1}^n Y_i$
+* The sampling distribution of $\bar{Y}$:
+    * has mean $\mu$
+    * has standard deviation $\sigma/\sqrt{n}$
+    * for **large enough $n$**, it is approximately normal
+    * putting this together: If $n$ is large enough, $\bar{Y} \sim \text{Normal}(\mu, \sigma/\sqrt{n})$ (approximately).
+* "How large does $n$ have to be?"  Depends on shape of population distribution - but if the distribution is symmetric enough that you are calculating a mean, about 30 is usually enough.
+
+\newpage
+
+## Example (Adapted from SDM4 17.62)
+
+Farmers measure daily milk production in pounds.  Ayrshire cows average 55 pounds of milk per day, with a standard deviation of 6 pounds.  Suppose I plan to select 100 Ayrshire cows at random and measure their milk production, and then compute the average milk production for those 100 cows (I know that the mean will be a reasonable summary of the center of this distribution).  What is the sampling distribution for the sample mean?
+
+### (a) Examine conditions/assumptions for using the central limit theorem to say something about the sampling distribution of the sample mean.
+
+ * Is the milk production for different cows **independent**?
+ * Am I thinking about a **quantitative variable**?
+ * Is **calculating a mean reasonable**/is my **sample size** large enough?
+
+\vspace{2cm}
+
+### (b) What is the sampling distribution of the sample mean, approximately?
+
+

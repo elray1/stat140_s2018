@@ -1,0 +1,124 @@
+---
+title: "Intro to Inference for a Population Mean"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(readr)
+```
+
+# Previously: Estimating a Population Proportion with the Sample Proportion
+
+What Proportion of M&M's are blue?
+
+\includegraphics{pop-sample.png}
+
+## Key point: The variable we measured on each M&M was a categorical variable with two categories (or at least, two categories we cared about): is the M&M blue?
+
+The population parameter we are interested in is **what proportion of the population have a characteristic**.
+
+\newpage
+
+# Next: Estimating a Population Mean with the Sample Mean
+
+What is the average weight of all M&M's?
+
+What is the average gestation time of all babies born in the United States?
+
+\includegraphics{pop-sample-quantitative.png}
+
+## Key point: Now, the variable we measure on each M&M is a quantitative variable: what is the M&M's weight in grams?
+
+The population parameter we are interested in is a measure of **the center of the distribution of that quantitative variable**.
+
+In this class, we will only discuss methods for making inference about the **mean** of a quantitative variable.
+
+\newpage
+
+# Example: Body Temperatures
+
+It's generally believed that the average body temperature is 98.6 degrees Farenheit (37 degrees Celsius).
+
+Let's investigate with measurements of the temperatures of 130 randomly selected adults.  The following R code reads the data in and makes an initial plot:
+
+```{r, echo = TRUE, fig.height = 3.5}
+library(readr)
+library(dplyr)
+bodytemp <- read_csv("http://www.evanlray.com/stat140_s2018/data/jse/normtemp/bodytemp.csv")
+bodytemp$sex <- factor(bodytemp$sex)
+head(bodytemp)
+ggplot(data = bodytemp, mapping = aes(x = temp)) +
+  geom_density()
+```
+
+## 1. What is the population?
+
+\vspace{2cm}
+
+## 2. What is the population parameter?  What symbol will you use to denote the population parameter?
+
+\vspace{2cm}
+
+## 3. Are the conditions met for using the sample to learn about the population?
+
+There are **four** things to think about:
+
+1. Is the sample **representative** of the population? (always required)
+    * Were we careful in **randomly selecting** the people to include in the sample?
+    * Are there any forms of **bias** in the sampling?  In this case, 23 people did not respond (there is some non-response).  Does this matter?
+
+\vspace{2cm}
+
+2.  Are the the people in the sample **independent** from each other? (required for all methods we will use in this class)
+    * Does knowing one person's response change the information we have about another person's response?
+    * Closely related to the question of randomization above.
+
+\vspace{2cm}
+
+3. Is the variable we have recorded a **quantitative variable for each person or thing in the sample**?  (required for inference about a population mean to make sense)
+
+\vspace{2cm}
+
+4. Is the **mean a reasonable summary of the center**?  (required for inference about a population mean to make sense)
+    * Is the distribution approximately symmetric (or at least, not so skewed that the mean will be pulled away from the center)?
+    * Is the distribution approximately unimodal (or at least, close enough that the mean is saying something meaningful about the distribution)?
+
+\vspace{2cm}
+
+## 4. Write the null and alternative hypotheses for a test of the claim that the population mean body temperature is 98.6 degrees F.
+
+\vspace{2cm}
+
+## 5. Write the R code to conduct this test and obtain a 99% confidence interval for the population mean body temperature.
+
+```{r, echo = TRUE, message=FALSE}
+library(mosaic)
+t.test(~temp, mu = 98.6, conf.level = 0.99, data = bodytemp)
+```
+
+**Note:** Compare to the following output:
+
+```{r, echo = TRUE}
+bodytemp %>%
+  summarize(mean_temp = mean(temp))
+```
+
+## 6. State a point estimate for the population mean body temperature.
+
+\vspace{2cm}
+
+## 7. State and interpret the p-value for the hypothesis test.  What is your conclusion, using a significance level of $\alpha = 0.001$?
+
+\vspace{2cm}
+
+## 8. State and interpret a 99% confidence interval for the population mean body temperature.
+
+\vspace{2cm}
+
+## 9. What does the phrase "99% Confident" mean in the context of this example?
+
+\vspace{3cm}
