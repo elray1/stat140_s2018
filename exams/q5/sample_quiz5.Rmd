@@ -1,0 +1,59 @@
+---
+title: "Stat 140 - Quiz 5"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+## What's Your Name? __________________________________
+
+This is a sample quiz.  On the real quiz, I will pick a different example of inference for a population proportion, and ask a subset of 3 or 4 of the questions below.
+
+## Garden Seeds
+
+A garden center wants to store leftover packets of vegetable seeds for sale the following spring, but the center is concerned that the seeds may not germinate at the same rate a year later.
+
+The manager randomly selects 200 seeds from a variety of packets from different companies and different batches of seeds, and plants them.  She carefully prepares similar soil for the seeds in a greenhouse, and randomizes where the seeds are planted within the greenhouse.  She finds that 171 of the 200 test seeds grew.  The seed packets all claimed that 95% of the seeds would grow.
+
+In answering the questions below, use the following output from R:
+
+```{r}
+binom.test(x = 171, n = 200, p = 0.95)
+```
+
+#### 1) Describe the population parameter in a sentence.  What symbol would you use for the population parameter?
+
+\vspace{3cm}
+
+#### 2) Describe the sample statistic in a sentence.  What symbol would you use for the sample statistic?
+
+\vspace{3cm}
+
+#### 3) Is the number 171/200 = 0.855 a sample statistic or a population parameter?
+
+\vspace{2cm}
+
+#### 4) Suppose the manager wants to conduct a hypothesis test of whether the old seeds germinate at the advertised rate.  Write down the null and alternative hypotheses for this test.
+
+\vspace{2cm}
+
+#### 5) Check the conditions for performing inference about the population parameter based on the sample data.
+
+\vspace{3cm}
+
+#### 6) Draw a conclusion for the hypothesis test at the $\alpha = 0.05$ significance level.  Explain/justify your answer.  You do not need to define or interpret the p-value as a part of this explanation.
+
+\vspace{2cm}
+
+#### 7) State a 95% confidence interval in the context of this problem.  You do not need to explain what the phrase "95% confident" means as part of your answer.
+
+\vspace{3cm}
+
+#### 8) In your answer to part 6, what does the phrase "95% confident" mean?
+

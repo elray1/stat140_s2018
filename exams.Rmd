@@ -27,3 +27,7 @@ Review materials and solutions to quizzes and exams will be posted here.
 |         | [sample](exams/q4/sample_quiz4.pdf),                     |               |                                                              |
 |         | [sample solutions](exams/q4/sample_quiz4_solutions.pdf)  |               |                                                              |
 +---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
+| Quiz    | Material from HW 9.                                      | 2018-04-05    |                                                              |
+|         | [sample](exams/q5/sample_quiz5.pdf),                     |               |                                                              |
+|         | [sample solutions](exams/q5/sample_quiz5_sol.pdf)        |               |                                                              |
++---------+----------------------------------------------------------+---------------+--------------------------------------------------------------+
