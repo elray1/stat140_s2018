@@ -302,6 +302,8 @@ make_week_box("week11", TRUE, "Week 11: Apr 2 -- 6",
  * **In class**, we will do the following:
     * Wrap Up/Summarize the sampling distribution of the sample mean; lab 14
     * Start connecting this to mechanics of inference for a population mean - what's going on behind the scenes?
+    * Handout for the week: [pdf](lecture/20180403_z_score_t_test/20180403_z_score_t_test.pdf)
+    * Solutions for examples 5 and 6 in handout: [pdf](lecture/20180403_z_score_t_test/20180403_z_score_t_test_solutions.pdf)
 
 #### Thu, Apr 5
  * **In class**, we will do the following:
@@ -311,6 +313,7 @@ make_week_box("week11", TRUE, "Week 11: Apr 2 -- 6",
 #### Fri, Apr 6
  * **In class**, we will do the following:
     * Wrap Up looking at the mechanics of inference for a population mean - what's going on behind the scenes?
+    * New handout: [pdf](lecture/20180406_t_test/20180406_t_test.pdf)
 "
   )
 ```

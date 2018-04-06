@@ -1,0 +1,131 @@
+---
+title: "Motivation for $t$ Test"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+# Allergy Medicine dosage
+
+Back on Quiz 2, we looked at measurements of the amount of active ingredient (chlorpheniramine maleate) in cold and allergy medicine pills produced in 7 different laboratories.  For all 7 laboratories, the pills were supposed to include 4 mg of chlorpheniramine maleate.
+
+Suppose we select 20 pills at random from these labs and measure the total amount of active ingredient in each pill, and the data for two of these labs are as follows:
+
+```{r, load_data, message = FALSE, echo = FALSE, warning=FALSE}
+library(NHANES)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(mosaic)
+library(readr)
+
+n <- 20
+mean_1 <- 4.043
+sd_1 <- 0.03
+mean_2 <- 4.037
+sd_2 <- 0.07
+
+set.seed(1000)
+
+pills <- data.frame(
+  Lab = rep(c("Lab 1", "Lab 2"), each = n),
+  measured_chlorpheniramine_maleate = c(rnorm(n = n, mean = mean_1, sd = sd_1), rnorm(n = n, mean = mean_2, sd = sd_2))
+)
+```
+
+```{r}
+pills %>%
+  group_by(Lab) %>%
+  summarize(
+    mean_ingredient = mean(measured_chlorpheniramine_maleate),
+    sd_ingredient = sd(measured_chlorpheniramine_maleate))
+```
+
+```{r, fig.height = 3}
+ggplot(data = pills, mapping = aes(x = measured_chlorpheniramine_maleate, color = Lab)) +
+  geom_density()
+```
+
+Note that the sample means are similar in both groups, at roughly 4.03 (though the mean is very slightly higher for lab 2).
+
+Suppose we are interested in testing the hypothesis that $\mu = 4.0$ for each lab (imagine that we will conduct this test once for Lab 1, and then a second time for Lab 2).
+
+## Based on the plot above, for which lab is the evidence stronger that the population mean amount of active ingredient for that lab is not equal to 4?  Why?
+
+
+
+
+\newpage
+
+```{r}
+lab1_pills <- pills %>%
+  filter(Lab == "Lab 1")
+
+lab2_pills <- pills %>%
+  filter(Lab == "Lab 2")
+
+t.test(~ measured_chlorpheniramine_maleate, mu = 4, data = lab1_pills)
+
+t.test(~ measured_chlorpheniramine_maleate, mu = 4, data = lab2_pills)
+```
+
+```{r, fig.height = 3, echo = FALSE}
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+plot_col <- gg_color_hue(2)[2]
+
+normal_mean <- 4
+normal_sd <- sd(lab2_pills$measured_chlorpheniramine_maleate) / sqrt(20)
+offset <- mean(lab2_pills$measured_chlorpheniramine_maleate) - 4
+lower <- 3.9
+upper <- 4.1
+
+plot_df1 <- data.frame(
+  x = c(lower,
+    seq(from = lower,
+      to = normal_mean - offset,
+      length = 101),
+    normal_mean - offset
+    ),
+  density = c(0,
+    dnorm(seq(from = lower,
+        to = normal_mean - offset,
+        length = 101),
+      mean = normal_mean,
+      sd = normal_sd),
+    0)
+  )
+
+plot_df2 <- data.frame(
+  x = c(upper,
+    seq(from = upper,
+      to = normal_mean + offset,
+      length = 101),
+    normal_mean + offset
+    ),
+  density = c(0,
+    dnorm(seq(from = upper,
+        to = normal_mean + offset,
+        length = 101),
+      mean = normal_mean,
+      sd = normal_sd),
+    0)
+  )
+
+
+ggplot(data = lab2_pills, mapping = aes(x = measured_chlorpheniramine_maleate)) +
+  geom_polygon(aes(x = x, y = density), fill = "black", alpha = 0.4, data = plot_df1) +
+  geom_polygon(aes(x = x, y = density), fill = "black", alpha = 0.4, data = plot_df2) +
+  geom_density(color = plot_col) +
+  stat_function(fun = dnorm, args = list(mean = 4, sd = sd(lab2_pills$measured_chlorpheniramine_maleate) / sqrt(20))) + 
+  geom_vline(mapping = aes(xintercept = mean(lab2_pills$measured_chlorpheniramine_maleate)), color = plot_col) +
+  ggtitle("Blue Curve: Density Curve for Sample Data for Lab 2, sd = 0.0779\nVertical Blue Line: Sample Mean for Lab 2\nBlack Curve: Normal(4, 0.0779/sqrt(20))\n                     = estimated sampling distribution if Null hypothesis is true\nShaded Region: p-value (approximate)")
+```
