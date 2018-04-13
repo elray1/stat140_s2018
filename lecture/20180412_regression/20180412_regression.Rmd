@@ -1,0 +1,208 @@
+---
+title: "Linear Regression - First Example"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(mosaic)
+```
+
+# Mortality and Hard Water
+
+* Scientists believe that hard water (water with high concentrations of calcium and magnesium) is beneficial for health (Sengupta, P. (2013). IJPM, 4(8), 866-875.)
+
+* We have recordings of the mortality rate (deaths per 100,000 population) and concentration of calcium in drinking water (parts per million) in 61 large towns in England and Wales
+
+```{r, message=FALSE, fig.height = 5, fig.width=6}
+mortality_water <- read_csv("https://mhc-stat140-2017.github.io/data/sdm4/Hard_water_Derby.csv")
+
+ggplot(data = mortality_water, mapping = aes(x = Calcium, y = Mortality)) +
+  geom_point()
+```
+
+* **Explanatory** (~~independent~~) variable goes on the x axis, **Response** (~~dependent~~) variable on the y axis
+* **Notation**:
+    * $x_i$: value of explanatory variable (Calcium) for observational unit number $i$
+    * $y_i$: value of response variable (Mortality) for observational unit number $i$
+* **Big idea**: Summarize the relationship between these variables with a line.
+
+\newpage
+
+# R Commands (first look - more to come)
+
+## Add a line to the plot
+
+```{r, echo=TRUE, message=FALSE, fig.height = 2, fig.width=6}
+ggplot(data = mortality_water, mapping = aes(x = Calcium, y = Mortality)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+## Estimate intercept and slope of line
+
+```{r}
+linear_fit <- lm(Mortality ~ Calcium, data = mortality_water)
+```
+
+General form of `lm` command:
+
+```{r, echo = TRUE, eval = FALSE}
+lm(response_variable ~ explanatory_variable, data = data_frame)
+```
+
+## View summary of linear model fit
+
+```{r}
+summary(linear_fit)
+```
+
+\newpage
+
+## Foundations
+
+### 1. What is the estimated intercept and its interpretation?
+
+\vspace{3cm}
+
+### 2. What is the estimated slope and its interpretation?
+
+\vspace{3cm}
+
+### 3. What is the estimated equation for the regression line?
+
+\vspace{3cm}
+
+### 4. One of the towns in our sample had a measured Calcium concentration of 71.  What is the predicted value for the mortality rate in that town?
+```{r}
+predict_data <- data.frame(
+  Calcium = 71
+)
+predict(linear_fit, newdata = predict_data)
+```
+
+\vspace{3cm}
+
+### 5. Based on this analysis, does increasing the concentration of Calcium in drinking water cause a reduction in the mortality rate?
+
+\newpage
+
+## Residuals
+
+* $\definecolor{residual}{RGB}{230,159,0}\color{residual}\text{Residual}$ = $\definecolor{observed}{RGB}{0,158,115}\color{observed}Observed$ - $\definecolor{predicted}{RGB}{86,180,233}\color{predicted}Predicted$
+
+* $\definecolor{residual}{RGB}{230,159,0}\color{residual}e_i$ = $\definecolor{observed}{RGB}{0,158,115}\color{observed}y_i$ - $\definecolor{predicted}{RGB}{86,180,233}\color{predicted}\widehat{y}_i$ ($e$ stands for error)
+
+```{r, echo=FALSE, message=FALSE, fig.height = 4, fig.width=6}
+x <- 71
+y_obs <- 1713
+y_hat <- predict(linear_fit, newdata = data.frame(Calcium = 71))
+
+ex_df <- data.frame(
+  x = x,
+  y_obs = y_obs,
+  y_hat = y_hat,
+  resid = y_obs - y_hat
+)
+
+offset <- 8
+offset2 <- 5
+y_mid <- mean(c(y_obs, y_hat))
+resid_df <- data.frame(
+  x = c(x, x + offset, x + offset, x + offset + offset2, x + offset, x + offset, x),
+  y = c(y_obs, y_obs, y_mid, y_mid, y_mid, y_hat, y_hat)
+)
+
+ggplot() +
+  geom_point(mapping = aes(x = Calcium, y = Mortality), data = mortality_water) +
+  geom_smooth(mapping = aes(x = Calcium, y = Mortality), data = mortality_water, method = "lm", se = FALSE) +
+  geom_path(mapping = aes(x = x, y = y), color = "#e69f00", size = 2, data = resid_df) +
+  geom_point(mapping = aes(x = x, y = y_obs), color = "#009E73", size = 4, data = ex_df) +
+  geom_point(mapping = aes(x = x, y = y_hat), color = "#56B4E9", size = 4, data = ex_df) +
+  geom_label(mapping = aes(label = "y[i]", x = x, y = y_obs), size = 8, nudge_x = -6.5, nudge_y = 40, color = "#009E73", parse = TRUE, data = ex_df) +
+  geom_label(mapping = aes(label = "hat(y)[i]", x = x, y = y_hat), size = 8, nudge_x = -6.5, nudge_y = 55, color = "#56B4E9", parse = TRUE, data = ex_df) +
+  geom_label(mapping = aes(label = "e[i]", x = x + offset + offset2, y = y_mid), size = 8, nudge_x = 5, color = "#e69f00", parse = TRUE, data = ex_df)
+```
+
+### 6. For the town we considered in part 4 above, with an observed Calcium measurement of 71 ppm, the observed Mortality rate was 1713 deaths per 100,000 population.  What was the residual for that town?
+
+\vspace{3cm}
+
+### 7. Another town had an observed Calcium measurement of 50 ppm, and an observed Mortality rate of 1257 deaths per 100,000 population.  What was the residual for that town?
+```{r}
+predict(linear_fit, newdata = data.frame(Calcium = 50))
+```
+
+\newpage
+
+## Finding the Line of Best Fit
+
+```{r, echo=FALSE, message=FALSE, fig.height = 3, fig.width=6}
+mortality_water <- mutate(mortality_water,
+  Mortality = as.numeric(Mortality),
+  predicted = predict(linear_fit),
+  residual = residuals(linear_fit))
+mortality_water_augmented <- mortality_water
+mortality_water_augmented$min_val <- as.numeric(apply(mortality_water_augmented, 1, function(rowvals) {min(rowvals[c("predicted", "Mortality")])}))
+mortality_water_augmented$max_val <- as.numeric(apply(mortality_water_augmented, 1, function(rowvals) {max(rowvals[c("predicted", "Mortality")])}))
+
+ggplot() +
+  geom_linerange(mapping = aes(x = Calcium, ymin = min_val, ymax = max_val), color = "#e69f00", size = 2, data = mortality_water_augmented) +
+  geom_point(mapping = aes(x = Calcium, y = Mortality), color = "#009E73", size = 3, data = mortality_water_augmented) +
+  geom_smooth(mapping = aes(x = Calcium, y = Mortality), data = mortality_water_augmented, method = "lm", se = FALSE) +
+  geom_point(mapping = aes(x = Calcium, y = predicted), color = "#56B4E9", size = 3, data = mortality_water_augmented)
+```
+
+* The "best" line has the smallest residuals
+* Pick $b_0, b_1$ to minimize sum of squared errors/residuals: $SSE = \sum_{i = 1}^n e_i^2$
+
+$$b_1 = r \frac{s_y}{s_x} \qquad \qquad b_0 = \bar{y} - b_1 \bar{x}$$
+
+## How useful is the line?
+
+Rephrased: How close to the line do the points fall?
+
+### Answer 1: $R^2$
+
+Recall: Correlation ($r$) is a measure of the strength of a linear relationship.
+
+$R^2$ (read as "R squared") is the square of the correlation.
+
+"Proportion of variability in the response variable accounted for by the linear model."  (See office hours or intermediate statistics for more.)
+
+### 8. What is the $R^2$ value for this model fit?
+
+```{r}
+mortality_water %>%
+  select(Calcium, Mortality) %>%
+  cor()
+(-0.6548486)^2
+```
+
+
+\newpage
+
+### Answer 2: How big do the residuals tend to be?
+
+```{r, fig.height = 2}
+mortality_water <- mortality_water %>% mutate(
+  predicted = predict(linear_fit),
+  residual = residuals(linear_fit)
+)
+head(mortality_water)
+
+ggplot(data = mortality_water, mapping = aes(x = residual)) + geom_histogram(bins = 12)
+```
+
+If the residuals are all close to 0, the observed values are all close to the predicted values (i.e., the points are close to the line).
+
+### 9. What is the residual standard deviation?
+
+\vspace{2cm}
+
+### 10. Assuming that the residuals follow an approximately normal distribution, what is the interpretation of the residual standard deviation based on the "95" part of the 68-95-99.7 rule?

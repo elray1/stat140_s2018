@@ -324,10 +324,17 @@ make_week_box("week12", TRUE, "Week 12: Apr 9 -- 13",
 **Midterm 2**: Material from homeworks 8, 9, and 10 - take home.
 
 #### Tue, Apr 10
+ * **In class**, we will do the following:
+    * Manual construction of $t$ intervals for a population mean: [pdf](lecture/20180410_t_interval/20180410_t_interval.pdf)
 
 #### Thu, Apr 12
+ * **In class**, we will do the following:
+    * Example/Introduction to Linear Regression: [pdf](lecture/20180412_regression/20180412_regression.pdf)
 
 #### Fri, Apr 13
+ * **In class**, we will do the following:
+    * Regression lab on Gryd
+    * Wrap-up for regression lab: [html](lecture/20180413_regression/20180413_regression.html)
 "
   )
 ```

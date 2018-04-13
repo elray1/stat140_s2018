@@ -1,0 +1,30 @@
+---
+title: "Summary of Inference"
+output: pdf_document
+classoption: landscape
+geometry: margin=1cm
+header-includes:
+   - \usepackage{booktabs}
+---
+
+Starting Point:
+
+ 1. What are the observational units?
+ 2. What are the variables?
+ 3. Is each variable quantitative or categorical?
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{p{0.14\textwidth} p{0.20\textwidth} p{0.13\textwidth} p{0.13\textwidth} p{0.07\textwidth} p{0.11\textwidth} p{0.11\textwidth}}
+\toprule
+What Did You Measure? & Conditions for Inference & Population Parameter & Sample Statistic & R function & CI & Hypothesis Test \\
+\midrule
+A Categorical Variable (or a count of how many in sample were in a certain category) & \begin{itemize}\item Representative sample \item Independent observational units \item Count of how many in sample were in a certain category \end{itemize} & $p$: proportion of population in a certain category & $\hat{p}$: proportion of sample in a certain category & {\tt binom.test} & from R & from R \\
+\midrule
+A Quantitative Variable & \begin{itemize}\item Representative sample \item Independent observational units \item Quantitative variable \item Mean is a good summary of the center (distribution is approximately unimodal and symmetric, no serious outliers) \end{itemize} & $\mu$: population mean & $\bar{x}$: sample mean & {\tt t.test} & $\bar{x} \pm t_{n-1}^* s / \sqrt{n}$ & test statistic: \newline $t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}$ \newline  If the null hypothesis is true, then $t \sim t_{n - 1}$ \\
+\midrule
+2 Quantitative Variables (possibly also other variables) & Think of Robert the leprechaun: \textbf{R. O'LINE} \begin{itemize}\item \textbf{R}epresentative sample \item No \textbf{O}utliers \item \textbf{L}inear relationship \item \textbf{I}ndependent observational units \item \textbf{N}ormally distributed residuals \item \textbf{E}qual variance of residuals \end{itemize} & $\beta_0$: Intercept of line \newline describing population \newline $\beta_1$: Slope of line \newline describing population \newline (possibly also other coefficients) & $b_0$: Intercept of line \newline describing sample \newline $b_1$: Slope of line \newline describing sample \newline (possibly also other coefficients) & {\tt lm} & $b_0 \pm t^*_{n - k - 1} SE(b_0)$ \newline $b_1 \pm t^*_{n - k - 1} SE(b_1)$ \newline $k$ = number of explanatory variables (1 for simple linear regression) & test statistic: \newline $t = \frac{b_0 - \beta_0^{null}}{SE(b_0)}$ or \newline $t = \frac{b_1 - \beta_1^{null}}{SE(b_1)}$ \newline If the null hypothesis is true, then $t \sim t_{n - k - 1}$ \\
+\bottomrule
+\end{tabular}
+\label{table:mr}
+\end{table}

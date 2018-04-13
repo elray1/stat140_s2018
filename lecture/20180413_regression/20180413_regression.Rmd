@@ -1,0 +1,88 @@
+---
+title: "Linear Regression Lab Wrap-Up"
+author: "Evan L. Ray"
+date: "April 13, 2018"
+output: ioslides_presentation
+---
+
+<script type="text/x-mathjax-config"> 
+    MathJax.Hub.Config({ 
+        "HTML-CSS": { scale: 90, linebreaks: { automatic: true } }, 
+        SVG: { linebreaks: { automatic:true } }, 
+        displayAlign: "left" });
+</script>
+
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+  .MathJax {
+    font-size: 0.9em;
+  }
+</style>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({ TeX: { extensions: ["color.js"] }});
+</script>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(ggplot2)
+require(dplyr)
+require(tidyr)
+require(readr)
+```
+
+## Wrap Up for Lab
+
+```{r, message=FALSE, echo = FALSE}
+wildfires <- read_csv("https://mhc-stat140-2017.github.io/data/sdm4/Wildfires_2012.csv")
+names(wildfires) <- c("num_fires", "years_since_1985", "ave_acres_burned")
+wildfires <- mutate(wildfires, year = years_since_1985 + 1985)
+wildfires <- arrange(wildfires, year)
+```
+
+```{r, echo = TRUE}
+linear_fit <- lm(ave_acres_burned ~ years_since_1985,
+  data = wildfires)
+coef(linear_fit)
+```
+* Predicted average number of acres burned in 1985 is 19.6
+
+```{r, echo = TRUE}
+linear_fit_year <- lm(ave_acres_burned ~ year,
+  data = wildfires)
+coef(linear_fit_year)
+```
+* Predicted average number of acres burned in year 0 is -4390
+
+## What's going on?
+
+<div class="col2">
+
+```{r, echo = FALSE, fig.width=3.5, fig.height=4}
+ggplot() +
+  geom_point(aes(x = years_since_1985, y = ave_acres_burned), data = wildfires) +
+  geom_abline(intercept = coef(linear_fit)[1], slope = coef(linear_fit)[2]) +
+  coord_cartesian(xlim = range(wildfires$years_since_1985), ylim = c(coef(linear_fit)[1], 110))
+```
+
+
+```{r, echo = FALSE, fig.width=3.5, fig.height=4}
+ggplot() +
+  geom_point(aes(x = year, y = ave_acres_burned), data = wildfires) +
+  geom_abline(intercept = coef(linear_fit_year)[1], slope = coef(linear_fit_year)[2]) +
+  coord_cartesian(xlim = c(0, 2017), ylim = c(coef(linear_fit_year)[1], 110))
+```
+</div>
+
+## Never Extrapolate Beyond the Data
+
+[An Important Message](https://www.causeweb.org/cause/sites/default/files/resources/fun/videos/How%20Far%20He%E2%80%99ll%20Go%20-%20Final.mp4)

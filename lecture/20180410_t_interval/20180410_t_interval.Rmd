@@ -1,0 +1,189 @@
+---
+title: "Constructing Confidence Intervals for Population Means"
+subtitle: "with Example of Paired Data"
+output: pdf_document
+header-includes:
+   - \usepackage{soul}
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(mosaic)
+```
+
+**Goal:** A $(1 - \alpha) \times 100$ % confidence interval for $\mu$.  Examples:
+
+$\alpha = 0.05 \Leftrightarrow 95\%$ confidence interval.
+
+$\alpha = 0.01 \Leftrightarrow 99\%$ confidence interval.
+
+$\alpha = 0.1 \Leftrightarrow 90\%$ confidence interval.
+
+**Interval:** $\bar{x} \pm t^* \frac{s}{\sqrt{n}}$
+
+```{r, fig.height=1, message=FALSE, warning=FALSE, echo=FALSE}
+#ci_df <- data.frame(
+#  x = mean(babies$apgar_eq_10),
+#  y = 0
+#)
+#paste(
+ggplot() +
+  geom_segment(mapping = aes(x = -10, xend = 10, y = 0, yend = 0)) +
+#    data = data.frame(x = 0, xend = 1, y = 0, yend = 0)) +
+  geom_point(mapping = aes(x = 0, y = 0), size = 3, color = "orange") +#, data = pop_prop) +
+  geom_errorbarh(mapping = aes(xmin = -5, xmax = 5, x = 0, y = 0), color = "orange") + 
+  xlim(c(-10, 10)) +
+#  xlab("Proportion with Apgar = 10") +
+  theme_bw(base_size = 14) +
+#  scale_x_continuous(name = "X", breaks = c(-5, 0, 5), labels = c(expression(bar(x) - s / sqrt(n)))) +
+  scale_x_continuous(name = "", breaks = c(-5, 0, 5), labels = c(expression(paste(bar(x) - t, "*", s / sqrt(n))), expression(bar(x)), expression(paste(bar(x) + t, "*", s / sqrt(n))))) +
+  scale_y_continuous(expand = c(0,0)) +
+  theme(
+    axis.line.y=element_blank(),
+    axis.line.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks.y=element_blank(),
+    axis.ticks.x=element_blank(),
+    axis.title.y=element_blank(),
+    panel.grid.minor.y=element_blank(),
+    panel.grid.minor.x=element_blank(),
+    panel.grid.major.y=element_blank(),
+    panel.grid.major.x=element_line(color = "black"),
+    panel.border = element_blank())
+```
+
+ * The **margin of error** is $t^* s / \sqrt{n}$: the amount we add and subtract from $\bar{x}$.
+ * $\bar{x}$ is the sample mean
+ * $s$ is the sample standard deviation
+ * $n$ is the sample size
+ * $t^*$ is the $(1 - \frac{\alpha}{2}) * 100$ percentile of the $t_{n -1}$ distribution.  Examples:
+    * $\alpha = 0.05 \Leftrightarrow 95\% \text{ CI } \Leftrightarrow t^* = 97.5\text{th Percentile of } t_{n - 1} \text{ distribution.}$
+    * $\alpha = 0.01 \Leftrightarrow 99\% \text{ CI } \Leftrightarrow t^* = 99.5\text{th Percentile of } t_{n - 1} \text{ distribution.}$
+    * $\alpha = 0.1 \Leftrightarrow 90\% \text{ CI } \Leftrightarrow t^* = 95\text{th Percentile of } t_{n - 1} \text{ distribution.}$
+
+```{r, fig.height = 3, echo = FALSE}
+normal_mean <- 0
+offset <- qt(0.975, df = 10)
+lower <- -4
+upper <- 4
+
+plot_df1 <- data.frame(
+  x = c(lower,
+    seq(from = lower,
+      to = normal_mean - offset,
+      length = 101),
+    normal_mean - offset
+    ),
+  density = c(0,
+    dt(seq(from = lower,
+        to = normal_mean - offset,
+        length = 101),
+      df = 10),
+    0)
+  )
+
+plot_df2 <- data.frame(
+  x = c(upper,
+    seq(from = upper,
+      to = normal_mean + offset,
+      length = 101),
+    normal_mean + offset
+    ),
+  density = c(0,
+    dt(seq(from = upper,
+        to = normal_mean + offset,
+        length = 101),
+      df = 10),
+    0)
+  )
+
+
+ggplot(mapping = aes(x = c(-4, 4))) +
+  geom_polygon(aes(x = x, y = density), fill = "black", alpha = 0.4, data = plot_df1) +
+  geom_polygon(aes(x = x, y = density), fill = "black", alpha = 0.4, data = plot_df2) +
+  stat_function(fun = dt, args = list(df = 10)) + 
+  geom_label(mapping = aes(
+    x = c(-3, 0, 3),
+    y = c(0.1, 0.1, 0.1),
+    label = c("Shaded\nArea\n0.025", "Central\nArea\n0.95", "Shaded\nArea\n0.025")
+  )) +
+  geom_vline(mapping = aes(xintercept = c(-1*offset, offset))) +
+  xlab("") +
+  ggtitle(
+    expression(paste("Example with ", alpha, " = 0.05 (95% CI)")),
+    subtitle = "Total area to left of t* is 0.975") +
+  scale_x_continuous(name = "",
+    breaks = c(-4, -offset, 0, offset, 4),
+    labels = c(-4, expression(paste(-t, "*")), 0, expression(paste(t, "*")), 4))
+```
+
+**In R, to look up $t^*$**:
+
+```{r}
+qt(0.975, df = 10) # For a 95% CI, sample size is n = 11
+```
+
+\newpage
+
+### Example 1
+
+This example was presented in Rice (2007):
+
+> To study the effect of cigarette smoking on platelet aggregation, Levine (1973) drew blood samples from 11 individuals before and after they smoked a cigarette and measured the extent to which the blood platelets aggregated.  Platelets are involved in the formation of blood clots, and it is known that smokers suffer more often from disorders involving blood clots than do nonsmokers.  The data are shown in the following table, which gives the maximum percentage of all the platelets that aggregated afer being exposed to a stimulus.
+
+```{r}
+platelets <- read_csv("http://www.evanlray.com/stat343_s2018/data/rice/Chapter%2011/platelet.txt")
+colnames(platelets) <- c("before", "after")
+head(platelets)
+nrow(platelets)
+```
+
+This is an example of **paired data**:
+
+ * We have two measurements on each person (these are **not independent**!)
+ * We are interested in the **difference** between these measurements on the same person
+ * These **differences are independent** across different people (or at least, this seems plausible)
+
+```{r}
+platelets <- platelets %>%
+  mutate(difference = after - before)
+head(platelets)
+```
+
+\newpage
+
+#### (a) What is the population parameter of interest?
+
+\vspace{2cm}
+
+#### (b) Check the conditions for inference with these data
+
+```{r, fig.height=3}
+ggplot(data = platelets, mapping = aes(x = difference)) +
+  geom_density()
+```
+
+\vspace{8cm}
+
+\newpage
+
+#### (c) Find a 95% confidence interval for the population parameter, and verify that it agrees with the output from `t.test`.
+
+\vspace{4cm}
+
+```{r, fig.height=3}
+platelets %>%
+  summarize(
+    mean_difference = mean(difference),
+    sd_difference = sd(difference))
+
+qt(0.975, df = 11 - 1)
+
+10.27273 -  2.228139 * 7.976101 / sqrt(11)
+10.27273 +  2.228139 * 7.976101 / sqrt(11)
+
+t.test(~ difference, data = platelets)
+```
