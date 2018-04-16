@@ -1,4 +1,5 @@
 library(readr)
+library(dplyr)
 
 set.seed(1)
 anscombe$x5 <- anscombe$x1
@@ -20,5 +21,10 @@ summary(lm(anscombe$y5 ~ anscombe$x5))
 #plot(anscombe$y5 ~ anscombe$x5)
 
 ggplot(data = anscombe, mapping = aes(x = x5, y = y5)) + geom_point() + geom_smooth(method = "lm", se = FALSE)
+
+anscombe <- anscombe %>%
+  select(
+    x1, x2, x3, x4, x5, y1, y2, y3, y4, y5
+  )
 
 write_csv(anscombe, "anscombe_quintet.csv")
