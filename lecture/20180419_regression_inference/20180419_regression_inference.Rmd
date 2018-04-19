@@ -1,0 +1,215 @@
+---
+title: 'Stat 140: Inference for Simple Linear Regression Example - Wild Horses'
+author: "Evan Ray"
+output:
+  pdf_document:
+    fig_height: 2.7
+    fig_width: 6.5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+header-includes:
+   - \usepackage{multicol}
+---
+
+
+```{r, include=FALSE}
+require(readr)
+require(tidyr)
+require(dplyr)
+require(ggplot2)
+require(knitr)
+require(mvtnorm)
+
+options(digits=4)
+
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+# Wild Horses
+
+What is the relationship between the size of a herd of horses and the number of foals (baby horses!!) that are born to that herd in a year?
+
+```{r}
+horses <- read_csv("https://mhc-stat140-2017.github.io/data/sdm4/Wild_Horses.csv")
+head(horses)
+nrow(horses)
+```
+
+## Questions to Start With:
+
+ * What is the observational unit?
+
+\vspace{0.5cm}
+
+ * What are the variable data types (**categorical** or **quantitative**)?
+     * **Foals**: 
+     * **Adults**: 
+
+\vspace{0.5cm}
+
+ * Which of these variables is the **explanatory** variable and which is the **response**?
+     * **Explanatory**: 
+     * **Response**: 
+
+\newpage
+
+## Previously: Fit linear regression to describe the relationship between number of adults and number of foals in the *sample*.
+
+ * Estimated Line: $\hat{y}_i = b_0 + b_1 x_i$
+ * $b_0$ and $b_1$ are **sample statistics**: they describe the data in our sample
+
+```{r, echo = FALSE}
+ggplot() +
+  geom_point(mapping = aes(x = Adults, y = Foals), color = "red", data = horses) +
+  geom_smooth(mapping = aes(x = Adults, y = Foals),
+    method = "lm",
+    color = "red",
+    se = FALSE,
+    data = horses) +
+  xlim(c(20, 280)) +
+  ylim(c(-5, 50))
+```
+
+## Today: Use data from this sample to learn about the relationship between number of adults and number of foals in the *population*
+
+ * Population Model:
+    * $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$
+    * $\varepsilon_i \sim \text{Normal}(0, \sigma)$
+ * $\beta_0$ and $\beta_1$ are **population parameters**: they describe the population
+
+```{r, echo = FALSE}
+lm_fit <- lm(Foals ~ Adults, data = horses)
+
+N <- 3 * nrow(horses)
+
+set.seed(1)
+population_coeffs <- c(-1, 0.138)
+
+horses_population <- data.frame(
+  Adults = runif(n = N, 25, 270)
+)
+horses_population$Foals <-
+  population_coeffs[1] + population_coeffs[2] * horses_population$Adults + rnorm(N, mean = 0, sd = summary(lm_fit)$sigma)
+horses_population$In_Sample = FALSE
+horses_population <- bind_rows(horses_population,
+  transmute(horses,
+    Adults = Adults,
+    Foals = Foals,
+    In_Sample = TRUE)
+)
+
+ggplot() +
+  geom_point(mapping = aes(x = Adults, y = Foals), data = horses_population) +
+  geom_smooth(mapping = aes(x = Adults, y = Foals),
+    method = "lm",
+    color = "black",
+    se = FALSE,
+    data = horses_population) +
+  geom_smooth(mapping = aes(x = Adults, y = Foals),
+    method = "lm",
+    color = "red",
+    se = FALSE,
+    data = horses) +
+  xlim(c(20, 280)) +
+  ylim(c(-5, 50))
+```
+
+\newpage
+
+\includegraphics{pop-sample.png}
+
+\newpage
+
+## (a) Are the assumptions for the linear regression model met?
+
+\includegraphics[width=0.5\textwidth]{leprechaun.png}
+
+
+\begin{itemize}
+\item \textbf{Representative} Sample
+\vspace{2cm}
+
+\item (No) \textbf{Outliers}
+\vspace{2cm}
+
+\item \textbf{Linear} Relationahip (Straight Enough)
+\vspace{2cm}
+
+\item \textbf{Independent} Observations (Randomization)
+\vspace{2cm}
+
+\item \textbf{Normal} Distribution of Residuals (Can't check this yet -- need to look at a histogram or density plot of the residuals after fitting the model)
+\vspace{2cm}
+
+\item \textbf{Equal} Variance of Residuals (Does the Plot Thicken?)
+\end{itemize}
+
+
+
+\vspace{4cm}
+
+\newpage
+
+## (b) Fit the linear model
+
+```{r}
+# format is: lm(response_variable ~ explanatory_variable, data = data_frame)
+lm_fit <- lm(Foals ~ Adults, data = horses)
+summary(lm_fit)
+```
+
+## (c) Check that the residuals follow a nearly normal distribution
+
+```{r}
+horses <- mutate(horses,
+  residual = residuals(lm_fit),
+  predicted = predict(lm_fit))
+ggplot() +
+  geom_density(mapping = aes(x = residual), data = horses)
+```
+
+## (d) Explain in context what the regression says about the relationship between the number of adult horses in a herd and the number of foals born to that herd.  Interpret both the intercept and the slope in context.
+
+\vspace{7cm}
+
+## (e) Conduct a hypothesis test of the claim that when there are 0 adults in a herd, there will be 0 foals born to that herd.
+
+\vspace{4cm}
+
+## (f) Draw a picture of a relevant t distribution for the hypothesis test in part (e) and shade in the region corresponding to the p-value.  How would you calculate the p-value for part (e) using the pt function in R and the given estimate and standard error?
+
+\vspace{4cm}
+
+\newpage
+
+## (g) Conduct a hypothesis test of the claim that there is no relationship between the number of adults in a herd and the number of foals who are born to that herd.
+
+\vspace{4cm}
+
+## (h) Obtain a 99% confidence interval for the population intercept, $\beta_0$, and for the population slope, $\beta_1$.  Interpret the confidence interval for $\beta_1$ in context.
+
+```{r}
+## Note that unlike every other confidence interval function we've looked at,
+## we set the confidence level with an argument called level, not conf.level
+confint(lm_fit, level = 0.99)
+```
+
+\vspace{4cm}
+
+## (i) How would you calculate the confidence interval for part (f) using the `qt` function in R and the given estimate and standard error?
+
+```{r}
+qt(0.995, df = 38 - 2)
+```
+
+\vspace{3cm}
+
+## (j) Interpret the standard error for the slope using the "95" part of the 68-95-99.7 rule.
+

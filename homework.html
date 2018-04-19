@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -30,10 +30,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -286,6 +288,34 @@ $(document).ready(function () {
 <td><p>10</p></td>
 <td><p>Chapters 17, 20; assigned on Gryd.</p></td>
 <td><p>4/03/2018</p></td>
+<td><p>1</p></td>
+<td><pre><code>  N/A</code></pre></td>
+</tr>
+<tr class="odd">
+<td><p>11</p></td>
+<td><p>Chapter 20; assigned on Gryd.</p></td>
+<td><p>4/10/2018</p></td>
+<td><p>1</p></td>
+<td><pre><code>  N/A</code></pre></td>
+</tr>
+<tr class="even">
+<td><p>12</p></td>
+<td><p>Chapter 20; assigned on Gryd.</p></td>
+<td><p>4/17/2018</p></td>
+<td><p>1</p></td>
+<td><pre><code>  N/A</code></pre></td>
+</tr>
+<tr class="odd">
+<td><p>13</p></td>
+<td><p>Chapters 7, 8, 25; assigned on Gryd.</p></td>
+<td><p>4/24/2018</p></td>
+<td><p>1</p></td>
+<td><pre><code>  N/A</code></pre></td>
+</tr>
+<tr class="even">
+<td><p>14</p></td>
+<td><p>Chapters ?; assigned on Gryd.</p></td>
+<td><p>4/30/2018</p></td>
 <td><p>1</p></td>
 <td><pre><code>  N/A</code></pre></td>
 </tr>

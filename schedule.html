@@ -20,8 +20,8 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -30,10 +30,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -695,8 +697,31 @@ $(document).ready(function () {
 <div id="week13" class="collapse in">
 <div class="panel-body">
 <h4 id="tue-apr-17">Tue, Apr 17</h4>
+<ul>
+<li><strong>In class</strong>, we will do the following:
+<ul>
+<li>Regression Example with Anscombe’s Data
+<ul>
+<li>Lab on Gryd</li>
+<li>Wrap-up together - regression assumptions and the importance of plots: <a href="lecture/20180417_anscombe_residuals/20180417_anscombe_residuals.pdf">pdf</a></li>
+</ul></li>
+</ul></li>
+</ul>
 <h4 id="thu-apr-19">Thu, Apr 19</h4>
+<ul>
+<li><strong>In class</strong>, we will do the following:
+<ul>
+<li>Inference for regression. Example: <a href="lecture/20180419_regression_inference/20180419_regression_inference.pdf">pdf</a></li>
+<li>Start Lab on Gryd</li>
+</ul></li>
+</ul>
 <h4 id="fri-apr-20">Fri, Apr 20</h4>
+<ul>
+<li><strong>In class</strong>, we will do the following:
+<ul>
+<li>Finish lab about inference for regression</li>
+</ul></li>
+</ul>
 </div>
 </div>
 </div>
@@ -709,8 +734,35 @@ $(document).ready(function () {
 <div id="week14" class="collapse in">
 <div class="panel-body">
 <h4 id="tue-apr-24">Tue, Apr 24</h4>
+<ul>
+<li><strong>Before class</strong>, please do the following:
+<ul>
+<li><strong>Homework 13</strong> due today!</li>
+</ul></li>
+<li><strong>In class</strong>, we will do the following:
+<ul>
+<li>Not yet planned</li>
+</ul></li>
+</ul>
 <h4 id="thu-apr-26">Thu, Apr 26</h4>
+<ul>
+<li><strong>In class</strong>, we will do the following:
+<ul>
+<li>Quiz on regression and inference for regression</li>
+<li>Not yet planned</li>
+</ul></li>
+</ul>
 <h4 id="fri-apr-27">Fri, Apr 27</h4>
+<ul>
+<li><strong>In class</strong>, we will do the following:
+<ul>
+<li>Not yet planned</li>
+</ul></li>
+</ul>
+<h4 id="mon-apr-30">Mon, Apr 30</h4>
+<ul>
+<li><strong>Homework 14</strong> due today!</li>
+</ul>
 </div>
 </div>
 </div>

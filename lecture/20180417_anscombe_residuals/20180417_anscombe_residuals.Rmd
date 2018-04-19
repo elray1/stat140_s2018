@@ -1,0 +1,323 @@
+---
+title: "Linear Regression:\nConditions for Inference, Residual Diagnostics"
+subtitle: "Anscombe Lab Wrap-Up"
+output:
+  pdf_document:
+    keep_tex: true
+header-includes:
+   - \usepackage{soul}
+   - \usepackage{booktabs}
+geometry: margin=1.5cm
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(mosaic)
+anscombe <- read_csv("http://www.evanlray.com/stat140_s2018/data/base_r/anscombe_quintet.csv")
+```
+
+# All 5 Have Essentially the Same Estimated Intercept Slope, Intercept, $R^2$, and Residual Standard Deviation!
+
+```{r, echo = FALSE}
+anscombe_long <- data.frame(
+  x = c(anscombe$x1, anscombe$x2, anscombe$x3, anscombe$x4, anscombe$x5),
+  y = c(anscombe$y1, anscombe$y2, anscombe$y3, anscombe$y4, anscombe$y5),
+  data_set = rep(paste("Data Set", 1:5), each = nrow(anscombe))
+)
+
+ggplot(data = anscombe_long, mapping = aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~factor(data_set))
+```
+
+* Briefly, **conditions for linear regression** (see last page for more detailed summary):
+    * Sample **representative** of population
+    * No **outliers** (points that don't fit the trend)
+    * **Linear** relationship
+    * **Independent** observations
+    * **Normally** distributed residuals
+    * **Equal variability** of residuals
+* **Use plots** to help diagnose the appropriateness of a linear model:
+    * Scatter plot of explanatory (x axis) vs. response (y axis)
+    * Scatter plot of predicted (x axis) vs. residual (y axis)
+    * Histogram or density plot of residuals (x axis)
+* Checks of whether the sample is representative and whether the observations are independent come from thinking about data collection process, not plots.
+
+\newpage
+
+# A Reminder about Residuals
+
+```{r, echo=FALSE, message=FALSE, fig.height = 4, fig.width=6}
+mortality_water <- read_csv("https://mhc-stat140-2017.github.io/data/sdm4/Hard_water_Derby.csv")
+
+linear_fit <- lm(Mortality ~ Calcium, data = mortality_water)
+
+
+x <- 71
+y_obs <- 1713
+y_hat <- predict(linear_fit, newdata = data.frame(Calcium = 71))
+
+ex_df <- data.frame(
+  x = x,
+  y_obs = y_obs,
+  y_hat = y_hat,
+  resid = y_obs - y_hat
+)
+
+offset <- 8
+offset2 <- 5
+y_mid <- mean(c(y_obs, y_hat))
+resid_df <- data.frame(
+  x = c(x, x + offset, x + offset, x + offset + offset2, x + offset, x + offset, x),
+  y = c(y_obs, y_obs, y_mid, y_mid, y_mid, y_hat, y_hat)
+)
+
+ggplot() +
+  geom_point(mapping = aes(x = Calcium, y = Mortality), data = mortality_water) +
+  geom_smooth(mapping = aes(x = Calcium, y = Mortality), data = mortality_water, method = "lm", se = FALSE) +
+  geom_path(mapping = aes(x = x, y = y), color = "#e69f00", size = 2, data = resid_df) +
+  geom_point(mapping = aes(x = x, y = y_obs), color = "#009E73", size = 4, data = ex_df) +
+  geom_point(mapping = aes(x = x, y = y_hat), color = "#56B4E9", size = 4, data = ex_df) +
+  geom_label(mapping = aes(label = "y[i]", x = x, y = y_obs), size = 8, nudge_x = -6.5, nudge_y = 40, color = "#009E73", parse = TRUE, data = ex_df) +
+  geom_label(mapping = aes(label = "hat(y)[i]", x = x, y = y_hat), size = 8, nudge_x = -6.5, nudge_y = 55, color = "#56B4E9", parse = TRUE, data = ex_df) +
+  geom_label(mapping = aes(label = "e[i]", x = x + offset + offset2, y = y_mid), size = 8, nudge_x = 5, color = "#e69f00", parse = TRUE, data = ex_df)
+```
+
+
+* Residuals give the vertical distance between a data point and the line of best fit
+
+* Positive if point above line, negative otherwise
+
+* $\definecolor{residual}{RGB}{230,159,0}\color{residual}\text{Residual}$ = $\definecolor{observed}{RGB}{0,158,115}\color{observed}Observed$ - $\definecolor{predicted}{RGB}{86,180,233}\color{predicted}Predicted$
+
+* $\definecolor{residual}{RGB}{230,159,0}\color{residual}e_i$ = $\definecolor{observed}{RGB}{0,158,115}\color{observed}y_i$ - $\definecolor{predicted}{RGB}{86,180,233}\color{predicted}\widehat{y}_i$ ($e$ stands for error)
+
+
+\newpage
+
+# Anscombe Quintet: Data Set 1 (The Way Life Should Be)
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = x1, y = y1)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+linear_fit1 <- lm(y1 ~ x1, data = anscombe)
+anscombe <- anscombe %>% mutate(
+  predicted1 = predict(linear_fit1),
+  residual1 = residuals(linear_fit1)
+)
+ggplot(data = anscombe, mapping = aes(x = predicted1, y = residual1)) +
+  geom_point()
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = residual1)) +
+  geom_density()
+```
+
+* **Outliers**?
+
+\vspace{1cm}
+
+* **Linear** relationship?
+
+\vspace{1cm}
+
+* **Normally** distributed residuals?
+
+\vspace{1cm}
+
+* **Equal variability** of residuals?
+
+\newpage
+
+# Anscombe Quintet: Data Set 2
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = x2, y = y2)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+linear_fit2 <- lm(y2 ~ x2, data = anscombe)
+anscombe <- anscombe %>% mutate(
+  predicted2 = predict(linear_fit2),
+  residual2 = residuals(linear_fit2)
+)
+ggplot(data = anscombe, mapping = aes(x = predicted2, y = residual2)) +
+  geom_point()
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = residual2)) +
+  geom_density()
+```
+
+* **Outliers**?
+
+\vspace{1cm}
+
+* **Linear** relationship?
+
+\vspace{1cm}
+
+* **Normally** distributed residuals?
+
+\vspace{1cm}
+
+* **Equal variability** of residuals?
+
+\newpage
+
+# Anscombe Quintet: Data Set 3
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = x3, y = y3)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+linear_fit3 <- lm(y3 ~ x3, data = anscombe)
+anscombe <- anscombe %>% mutate(
+  predicted3 = predict(linear_fit3),
+  residual3 = residuals(linear_fit3)
+)
+ggplot(data = anscombe, mapping = aes(x = predicted3, y = residual3)) +
+  geom_point()
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = residual3)) +
+  geom_density()
+```
+
+* **Outliers**?
+
+\vspace{1cm}
+
+* **Linear** relationship?
+
+\vspace{1cm}
+
+* **Normally** distributed residuals?
+
+\vspace{1cm}
+
+* **Equal variability** of residuals?
+
+\newpage
+
+# Anscombe Quintet: Data Set 4
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = x4, y = y4)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+linear_fit4 <- lm(y4 ~ x4, data = anscombe)
+anscombe <- anscombe %>% mutate(
+  predicted4 = predict(linear_fit4),
+  residual4 = residuals(linear_fit4)
+)
+ggplot(data = anscombe, mapping = aes(x = predicted4, y = residual4)) +
+  geom_point()
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = residual4)) +
+  geom_density()
+```
+
+* **Outliers**?
+
+\vspace{1cm}
+
+* **Linear** relationship?
+
+\vspace{1cm}
+
+* **Normally** distributed residuals?
+
+\vspace{1cm}
+
+* **Equal variability** of residuals?
+
+\newpage
+
+# Anscombe Quintet: Data Set 5
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = x5, y = y5)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+linear_fit5 <- lm(y5 ~ x5, data = anscombe)
+anscombe <- anscombe %>% mutate(
+  predicted5 = predict(linear_fit5),
+  residual5 = residuals(linear_fit5)
+)
+ggplot(data = anscombe, mapping = aes(x = predicted5, y = residual5)) +
+  geom_point()
+```
+
+```{r, message=FALSE, fig.height = 1.5, fig.width=4}
+ggplot(data = anscombe, mapping = aes(x = residual5)) +
+  geom_density()
+```
+
+* **Outliers**?
+
+\vspace{1cm}
+
+* **Linear** relationship?
+
+\vspace{1cm}
+
+* **Normally** distributed residuals?
+
+\vspace{1cm}
+
+* **Equal variability** of residuals?
+
+\newpage
+
+# Regression Conditions
+
+Think of a helpful leprechaun named \textbf{R}obert \textbf{O'Line}:
+
+\includegraphics[width=0.4\textwidth]{leprechaun.png}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{p{0.20\textwidth} p{0.20\textwidth} p{0.5\textwidth}}
+\toprule
+Condition & How Important? & How to Check? \\
+\midrule
+\textbf{R}epresentative sample & Critical & Think about data collection (randomization?) \\
+\midrule
+No \textbf{O}utliers & Very Important & Plots: \begin{itemize} \item Scatter Plot of explanatory variable vs response variable (no points stand out) \item Scatter plot of predicted value vs residuals (no points stand out) \item histogram or density plot of residuals (no outliers) \end{itemize} \\
+\midrule
+\textbf{L}inear relationship & Very Important & Plots: \begin{itemize} \item Scatter Plot of explanatory variable vs response variable (pattern is linear) \item Scatter plot of predicted value vs residuals (no curved patterns) \end{itemize} \\
+\midrule
+\textbf{I}ndependent observations & Very Important & \begin{itemize} \item Think about data collection (randomization?) \item Situations where observations are \textbf{not} independent: \begin{itemize} \item Observations collected over time (e.g., monthly unemployment measurements over time) \item Observations collected in space (e.g., number of pitcher plants in each square meter of a bog) \item Multiple observations on the same person (e.g., baseline and follow-up measurements of health in a clinical trial) \end{itemize} \end{itemize} \\
+\midrule
+\textbf{N}ormal distribution for residuals & Somewhat Important & Plots: \begin{itemize} \item histogram or density plot of residuals (approximately symmetric, no outliers) \end{itemize} \\
+\midrule
+\textbf{E}qual variability of residuals about the line as the explanatory variable changes. & Somewhat Important & Plots: \begin{itemize} \item Scatter Plot of explanatory variable vs response variable (same amount of vertical spread around line for all values of $x$) \item Scatter plot of predicted value vs residuals (same amount of vertical spread for all values of $x$) \end{itemize} \\
+\bottomrule
+\end{tabular}
+\label{table:mr}
+\end{table}

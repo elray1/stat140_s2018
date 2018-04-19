@@ -344,10 +344,19 @@ make_week_box("week13", TRUE, "Week 13: Apr 16 -- 20",
 "
 
 #### Tue, Apr 17
+ * **In class**, we will do the following:
+    * Regression Example with Anscombe's Data
+        * Lab on Gryd
+        * Wrap-up together - regression assumptions and the importance of plots: [pdf](lecture/20180417_anscombe_residuals/20180417_anscombe_residuals.pdf)
 
 #### Thu, Apr 19
+ * **In class**, we will do the following:
+    * Inference for regression.  Example: [pdf](lecture/20180419_regression_inference/20180419_regression_inference.pdf)
+    * Start Lab on Gryd
 
 #### Fri, Apr 20
+ * **In class**, we will do the following:
+    * Finish lab about inference for regression
 "
   )
 ```
@@ -357,10 +366,22 @@ make_week_box("week14", TRUE, "Week 14: Apr 23 -- 27",
 "
 
 #### Tue, Apr 24
+ * **Before class**, please do the following:
+    * **Homework 13** due today!
+ * **In class**, we will do the following:
+    * Not yet planned
 
 #### Thu, Apr 26
+ * **In class**, we will do the following:
+    * Quiz on regression and inference for regression
+    * Not yet planned
 
 #### Fri, Apr 27
+ * **In class**, we will do the following:
+    * Not yet planned
+
+#### Mon, Apr 30
+ * **Homework 14** due today!
 "
   )
 ```
