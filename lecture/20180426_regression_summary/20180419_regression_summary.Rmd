@@ -1,0 +1,153 @@
+---
+title: 'Stat 140: Regression Summary'
+output:
+  pdf_document:
+    fig_height: 2.7
+    fig_width: 6.5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+geometry: margin=1.5cm
+header-includes:
+   - \usepackage{multicol}
+---
+
+
+```{r, include=FALSE}
+require(readr)
+require(tidyr)
+require(dplyr)
+require(ggplot2)
+require(knitr)
+require(mvtnorm)
+
+options(digits=4)
+
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+\vspace{-0.5cm}
+
+#### Population Model
+
+ * The relationship between explanatory and response variable in the population is described by a line with intercept $\beta_0$ and slope $\beta_1$, with normally distributed "errors" around the line
+\vspace{-0.5cm}
+\begin{align*}
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i \\
+\varepsilon_i \sim \text{Normal}(0, \sigma)
+\end{align*}
+
+ * $Y_i$ is response variable value for observational unit number $i$ (number of foals in $i$'th herd)
+ * $X_i$ is explanatory variable value for observational unit number $i$ (number of adults in $i$'th herd)
+ * $\beta_0$ and $\beta_1$ are **population parameters** we want to estimate
+
+\vspace{-0.5cm}
+
+#### Plot line based on sample data
+
+```{r, echo = FALSE, message = FALSE}
+horses <- read_csv("https://mhc-stat140-2017.github.io/data/sdm4/Wild_Horses.csv")
+```
+
+```{r, echo = TRUE, fig.height=2}
+ggplot(data = horses, mapping = aes(x = Adults, y = Foals)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+\vspace{-0.5cm}
+
+#### Fit linear regression model, print summary (`Foals` is response, `Adults` is explanatory)
+
+```{r, echo = FALSE, eval = TRUE}
+lm_fit <- lm(Foals ~ Adults, data = horses)
+```
+
+```{r, echo = TRUE, eval = FALSE}
+lm_fit <- lm(Foals ~ Adults, data = horses)
+summary(lm_fit)
+```
+
+\includegraphics[height=3in]{R_output.png}
+
+\vspace{-0.5cm}
+
+#### Conditions for inference
+
+**R**epresentative sample; No **O**utliers; **L**inear relationship; **I**ndependent observations; **N**ormally distributed residuals; **E**qual variance of residuals
+
+\newpage
+
+\vspace{-0.5cm}
+#### Equation of estimated line based on sample
+
+Predicted Foals = -1.578 + 0.154 $\times$ Adults
+
+\vspace{-0.5cm}
+
+#### Interpretation of Estimated Intercept
+
+The model predicts that if a herd contains 0 Adults, there will be -1.578 Foals born.
+
+\vspace{-0.5cm}
+
+#### Interpretation of Estimated Slope
+
+The model predicts that for each additional Adult in a herd of horses, an additional 0.154 Foals will be born.
+
+\vspace{-0.5cm}
+
+#### Prediction for a Herd with 50 Adults
+
+Predicted Foals = -1.578 + 0.154 $\times$ 50 = 6.122.
+
+The model predicts that a herd with 50 adults will have 6.122 foals.
+
+\vspace{-0.5cm}
+
+#### Find and interpret a 95% confidence interval for $\beta_1$ (procedure similar for $\beta_0$)
+
+Confidence Interval for $\beta_1$: $b_1 \pm t^* SE(b_1)$, where:
+
+ * $b_1$ is estimate of slope based on this sample (from the R summary output)
+ * $t^*$ is the critical value from a $t$ distribution with $n - 2$ degrees of freedom (from `qt`)
+ * $SE(b_1)$ is the standard error of $b_1$ (from the R summary output)
+
+```{r}
+confint(lm_fit, level = 0.95)
+0.154 - qt(0.975, df = 36) * 0.0114
+0.154 + qt(0.975, df = 36) * 0.0114
+```
+
+We are 95% confident that the slope of a line describing the relationship between the number of adults in a herd of horses and the number of foals born to that herd, in the population of all herds of horses, is between 0.13 and 0.18.
+
+\vspace{-0.5cm}
+
+#### Conduct a hypothesis test with null hypothesis $\beta_1 = 0$
+
+Test statistic: $t = \frac{b_1 - \beta_1^{null}}{SE(b_1)} \sim t_{n - 2}$
+
+```{r}
+(0.154 - 0)/0.0114
+2 * pt(-13.5, df = 36)
+```
+
+Note that the third column of the "Coefficients:" table on the previous page also has the test statistic for this test, and the fourth column has the p-value.  The notation $1.175e{-}15$ means $1.175 * 10^{-15} = 0.000000000000001175$.  Since the p-value is very small, we reject the null hypothesis.  The data provide strong evidence that there is an association between the number of adults in a herd and the number of foals born to that herd.
+
+\vspace{-0.5cm}
+
+#### Use the residual standard deviation to describe how good the model's predictions are.
+
+About 95% of predictions from this model are within plus or minus 9.88 foals of the actual number of foals produced by a herd.  (9.88 is two times the residual standard deviation from the R summary output.)
+
+\vspace{-0.5cm}
+
+#### Use the $R^2$ value to describe how useful the model is (not that important, included for completeness)
+
+The $R^2$ value for this regression is 0.835.  This is close to 1, indicating that the points fall fairly close to the line.  (Recall that $R^2$ is the square of the correlation between the explanatory and response variables.)  This linear model accounts for about 83.5% of the variation in the response variable.

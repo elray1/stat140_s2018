@@ -1,0 +1,114 @@
+---
+title: 'Stat 140: Inference for Simple Linear Regression Example - Cognitive Decline'
+output:
+  pdf_document:
+    fig_height: 2.7
+    fig_width: 6.5
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+header-includes:
+   - \usepackage{multicol}
+---
+
+
+```{r, include=FALSE}
+require(readr)
+require(tidyr)
+require(dplyr)
+require(ggplot2)
+require(knitr)
+require(mvtnorm)
+
+options(digits=4)
+
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+# Age and Cognitive Function
+
+Various demographic and cardiovascular risk factors, including assessments of cognitive function, were collected as a part of the Prevention of Renal and Vascular End-stage Disease study, which took place between 2003 and 2006 in the Netherlands.  Cognitive function was measured with the The Ruff Figural Fluency Test (RFFT).  The test consists of drawing as many unique designs as possible from a pattern of dots under timed conditions; scores range from 0 to 175 points (worst and best score, respectively).
+
+Let's examine the relationship between the RFFT score and age.  Here is a plot of the data for 15 individuals in the study, as well as results of a linear model fit to the data.
+
+```{r, warning=FALSE, message=FALSE, echo = FALSE}
+cognitive_decline <- read_csv("https://mhc-stat140-2017.github.io/data/openintro/statins/statins.csv")
+
+set.seed(123)
+cognitive_decline <- sample_n(cognitive_decline, size = 15)
+```
+
+```{r}
+ggplot() +
+  geom_point(mapping = aes(x = Age, y = RFFT), data = cognitive_decline)
+```
+
+## 1. Which variable is the explanatory variable and which is the response?
+
+\newpage
+
+```{r}
+lm_fit <- lm(RFFT ~ Age, data = cognitive_decline)
+summary(lm_fit)
+```
+
+## 2. Write down the population model that the researcher who wrote the R code above had in mind.  (This involves no numbers, only symbols.)  What are the population parameters in this model, and what is their interpretation?
+
+\vspace{5cm}
+
+## 3. Write down the estimated equation describing the relationship between Age and RFFT score in this sample.
+
+\newpage
+
+## 4.  Do these data provide statistically significant evidence that there is a relationship between age and cognitive function?  Conduct a relevant hypothesis test.
+
+### (a) Write down the null and alternative hypotheses for the test.
+
+\vspace{2cm}
+
+### (b) Calculate the value of the test statistic based on the output from the model fit summary on page 2.  Draw a picture of a relevant $t$ distribution and shade in the area corresponding to the p-value for this test.
+
+\vspace{4cm}
+
+### (c) Use the following R output to calculate the p-value for the test (your result should agree with the p-value in the R output above).  Make sure you understand why this command is the right one to use for this purpose.
+
+```{r}
+pt(-3.587, df = 13)
+```
+
+\vspace{4cm}
+
+### (d) State the conclusion of the test.
+
+\newpage
+
+
+## 5. Find and interpret a confidence interval for the population parameter describing the linear association between age and cognitive decline.
+
+### (a) Use the following R output from the `qt` function, as well as information from the linear model summary above, to calculate a 95 percent confidence interval for the slope of a line describing the relationship between age and RFFT scores in the population.  Make sure you understand why this command is the right one to use for this purpose.  Your answer should agree with the output from the `confint` function up to rounding error.
+
+```{r}
+qt(0.975, df = 13)
+confint(lm_fit)
+```
+
+\vspace{3cm}
+
+### (b) Interpret your confidence interval from part (a) in context.
+
+\vspace{2cm}
+
+## 6. One of the people in our sample was age 65, and had an RFFT score of 40.  Find the model's prediction for the RFFT score of a 65 year old, and the residual for this individual.
+
+\vspace{2cm}
+
+## 7. In general, how good are this model's predictions?  Answer based on the residual standard deviation.
+
+\vspace{3cm}
+

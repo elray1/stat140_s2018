@@ -1,0 +1,639 @@
+---
+title: "Linear Model Theory (ish)"
+author: "Evan L. Ray"
+output:
+  ioslides_presentation:
+    smaller: true
+---
+
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
+require(ggplot2)
+require(scales)
+require(dplyr)
+require(tidyr)
+require(readr)
+require(mosaic)
+require(nycflights13)
+```
+
+## Population: Every Flight that Departed from NYC in 2013
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=3}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4)))))
+
+set.seed(2)
+```
+
+Population Model:
+
+$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$
+
+$\varepsilon_i \sim \text{Normal}(0, \sigma)$
+
+## Residuals Distribution in Population:
+
+Not exactly normal, but close enough.
+
+Black: Actual distribution of residuals; Red: The closest normal approximation
+
+```{r, cache = TRUE, fig.height=3}
+pop_lm <- lm(air_time ~ distance, data = flights)
+
+pop_resids <- residuals(pop_lm)
+ggplot(mapping = aes(x = pop_resids)) +
+  geom_density() +
+  stat_function(fun = dnorm, args = list(mean = 0, sd = sd(pop_resids)), color = "red")
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- data.frame(
+  sample_slope = coef(sample_lm)[2]
+)
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(round(coef(sample_lm)[1], digits = 4)), ", Sample Slope: ", b[1], " = ", .(round(coef(sample_lm)[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+n <- 20
+flights_sample <- flights %>% sample_n(size = n)
+sample_lm <- lm(air_time ~ distance, data = flights_sample)
+sample_slopes <- bind_rows(
+  sample_slopes,
+  data.frame(
+    sample_slope = coef(sample_lm)[2]
+  )
+)
+
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ", .(format(round(coef(sample_lm)[1], digits = 4), nsmall = 4)), ", Sample Slope: ", b[1], " = ", .(format(round(coef(sample_lm)[2], digits = 4), nsmall = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+
+
+
+```{r, echo = FALSE, fig.height=1.25}
+sample_slopes <- bind_rows(
+  sample_slopes,
+  {do(10000) * {
+    flights_sample <- flights %>% sample_n(size = n)
+    sample_lm <- lm(air_time ~ distance, data = flights_sample)
+    data.frame(
+      sample_slope = coef(sample_lm)[2]
+    )
+  }} %>% select(sample_slope)
+)
+```
+
+## Sampling Distribution of $b_1$
+
+The distribution of slope estimates $b_1$, across all different samples
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE, fig.height=1.5}
+ggplot(data = flights, mapping = aes(x = distance,  y = air_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  ggtitle(bquote(paste("Population Intercept: ", beta[0], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[1], digits = 4)), ", Population Slope: ", beta[1], " = ", .(round(coef(lm(air_time ~ distance, data = flights))[2], digits = 4))))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height=1.5, warning = FALSE, eval = TRUE}
+ggplot(data = flights_sample, mapping = aes(x = distance, y = air_time)) +
+  xlim(c(0, 3000)) +
+  ylim(c(0, 600)) +
+  geom_text(mapping = aes(x = x, y = y, label = label), size = 8,
+    data = data.frame(x = 1500, y = 300, label = "( ...draw 10,000 more samples of size n... )")) +
+  ggtitle(bquote(paste("Sample Intercept: ", b[0], " = ...", ", Sample Slope: ", b[1], " = ..."))) +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm"))
+```
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE, warning = FALSE}
+ggplot() +
+  geom_histogram(mapping = aes(x = sample_slope, y = ..density..), binwidth = 0.001, data = sample_slopes) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16))
+```
+
+## Sampling Distribution of $b_1$
+
+* If all of the conditions for inference are satisfied (R. O'LINE) then
+
+$b_1 \sim \text{Normal}\left(\beta_1, SD(b_1)\right)$, where $SD(b_1) = \sqrt{\frac{\sigma^2}{\sum_{i=1}^n (x_i - \bar{x})^2 }}$
+
+```{r, echo = FALSE, fig.height = 1.25, eval = TRUE, warning = FALSE}
+ggplot(data = sample_slopes, mapping = aes(x = sample_slope)) +
+  geom_histogram(mapping = aes(y = ..density..), binwidth = 0.001) +
+  stat_function(
+    fun = dnorm,
+    args = list(mean = coef(pop_lm)[2], sd = sqrt(var(pop_resids) / sum((flights_sample$distance - mean(flights_sample$distance))^2))),
+    color = "red"
+  ) +
+  xlab("Sample Slopes, n = 20") +
+  theme(plot.margin = unit(x = c(0, 0, 0, 0), units = "cm")) +
+  xlim(c(0.1, 0.16)) #    args = list(mean = mean(sample_slopes$sample_slope), sd = sd(sample_slopes$sample_slope)),
+```
+
+* (This is also still approximately true if most of the assumptions are mostly satisfied.)
+
+* Recall: Probabilities involving the normal distributions only depend on how many standard deviations away from the mean we are:
+
+$\frac{b_1 -\beta_1}{SD(b_1)}$
+
+* **Problem**: This is not useful in practice, because we do not know $\sigma$ (actual standard deviation of residuals in the population), so can't find $SD(b_1)$
+
+## What can we do?
+
+* Estimate $SD(b_1)$.  An estimate of a standard deviation is called a standard error.
+
+$SE(b_1) = \left[\frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{(n - 2)\sum_{i = 1}^n (x_i - \bar{x})^2}\right]^{1/2}$
+
+$\frac{b_1 - \beta_1}{SE(b_1)} \sim t_{n-2}$
+
+## How to use this for hypothesis tests?
+
+Null hypothesis: $\beta_1 = 0$
+
+Alternative hypothesis: $\beta_1 \neq 0$
+
+ * **p-value:** Probability of getting a test statistic at least as extreme as what we got based on this sample, assuming the null hypothesis is true.
+ 
+ * **test statistic:** $t = \frac{b_1 - \beta_1}{SE(b_1)} \sim t_{n-2}$
+ 
+ * If null hypothesis is true, $t = \frac{b_1 - \beta_1}{SE(b_1)} = \frac{b_1 - 0}{SE(b_1)}$
+    * "How many estimated standard deviations away from the hypothesized slope was our sample slope?"
+
+ * (Calculation of p-value hand-drawn on board)
+
+## How to use this for Conf. Intervals?
+
+ * For a 95% CI, find the value $t^*$ with $P(-t^* \leq \frac{b_1 - \beta_1}{SE(b_1)} \leq t^*) = 0.95$
+
+ * This means that for 95% of samples, $-t^* \leq \frac{b_1 - \beta_1}{SE(b_1)} \leq t^*$
+ 
+ * ...so for 95% of samples, $-t^* SE(b_1) \leq b_1 - \beta_1 \leq t^* SE(b_1)$
+ 
+ * ...so for 95% of samples, $-b_1 -t^* SE(b_1) \leq - \beta_1 \leq -b_1 + t^* SE(b_1)$
+
+ * ...so for 95% of samples, $b_1 -t^* SE(b_1) \leq \beta_1 \leq b_1 + t^* SE(b_1)$
+
+ * Confidence interval: $[b_1 -t^* SE(b_1), b_1 + t^* SE(b_1)]$
+ 
+ * In R, $t^*$ = `qt(0.975, df = n - 2)` for a 95% CI.
+ 
